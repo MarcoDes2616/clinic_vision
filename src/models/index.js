@@ -1,4 +1,4 @@
-const Role = require("./Role");
+const Role = require("./Roles");
 const Users = require("./Users");
 
 Role.hasMany(Users)
