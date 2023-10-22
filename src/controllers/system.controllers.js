@@ -8,6 +8,7 @@ const { Op } = require('sequelize');
 
 //ENDPOINT SYSTEM 1 --- LOGIN
 const login = catchError(async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
   const user = await Users.findOne({ where: { email } });
   if (!user || !user.status) return res.status(404).json({ message: "user not found or disabled" });
