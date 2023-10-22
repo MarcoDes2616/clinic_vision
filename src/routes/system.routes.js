@@ -15,7 +15,7 @@ systemRouter.route("/me")
 systemRouter.route("/reset_password")
     .post(resetPaswwordMail)
 
-systemRouter.route("/reset_password/:token")
+systemRouter.route("/update_password")
     .post(updatePassword)
 
 systemRouter.route("/verify_email")
