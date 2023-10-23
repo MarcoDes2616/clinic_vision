@@ -23,7 +23,6 @@ const login = catchError(async (req, res) => {
 //ENDPOINT SYSTEM 2 --- RESET PASSWORD
 const resetPaswwordMail = catchError(async (req, res) => {
   const { email } = req.body;
-  console.log(email);
   const user = await Users.findOne({ where: { email } });
   if (!user) return res.status(404).json({ message: "User no found" })
   const tokenToVerify = jwt.sign({ user }, process.env.TOKEN_SECRET, {
@@ -40,13 +39,13 @@ const resetPaswwordMail = catchError(async (req, res) => {
 
 //ENDPOINT SYSTEM 3 --- UPDATE PASSWORD
 const updatePassword = catchError(async (req, res) => {
-  const { token } = req.params;
+  const { password, token } = req.body;
   const user = await Users.findOne({ where: { resetCode: token } });
   if (!user) return res.status(401).json({ message: "Unauthorized" })
   const data = jwt.verify(token, process.env.TOKEN_SECRET);
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
   await Users.update(
-    { password: hashedPassword, resetCode: null,  },
+    { password: hashedPassword, resetCode: null, passwordChangeAt: Date.now() },
     { where: { id: data.user.id } }
   );
   res.status(201).json({ success: true });
