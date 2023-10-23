@@ -17,7 +17,7 @@ const login = catchError(async (req, res) => {
   const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
     expiresIn: process.env.TOKEN_EXPIRES_IN,
   });
-  res.json({ user, token });
+  res.status(200).json({ user, token });
 });
 
 //ENDPOINT SYSTEM 2 --- RESET PASSWORD
