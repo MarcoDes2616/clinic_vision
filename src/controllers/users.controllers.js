@@ -4,8 +4,10 @@ const Role = require('../models/Roles');
 
 const getAll = catchError(async(req, res) => {
     const isAdmin = req.isAdmin;
+    console.log(isAdmin);
     if(!isAdmin) return res.sendStatus(401);
-    const results = await Users.findAll({include: Role});
+    const results = await Users.findAll({include:
+        {model: Role, attributes: ['name']}});
     return res.json(results);
 });
 
