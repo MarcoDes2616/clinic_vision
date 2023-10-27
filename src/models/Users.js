@@ -27,7 +27,7 @@ const Users = sequelize.define(
       allowNull: true,
     },
     passwordChangeAt: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     status: {
@@ -50,6 +50,8 @@ Users.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
   delete values.password;
   delete values.createdAt;
+  delete values.resetCode;
+  delete values.passwordChangeAt;
   return values;
 };
 

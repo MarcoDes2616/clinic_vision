@@ -8,7 +8,6 @@ const { Op } = require('sequelize');
 
 //ENDPOINT SYSTEM 1 --- LOGIN
 const login = catchError(async (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   const user = await Users.findOne({ where: { email } });
   if (!user || !user.status) return res.status(404).json({ message: "user not found or disabled" });
@@ -32,7 +31,7 @@ const resetPaswwordMail = catchError(async (req, res) => {
     to: user.email,
     subject: "Reset password",
     html: ` <h3>Estas intentanto recuperar tu contraseña</h3>
-            <a href="${req.body.frontBaseUrl}/${tokenToVerify}">Click en el enlace para reset E-mail</a>`
+            <a href="${req.body.frontBaseUrl}/${tokenToVerify}">Click en el enlace para resetear tu contraseña</a>`
   });
   res.json({success: true});
 });
@@ -41,14 +40,23 @@ const resetPaswwordMail = catchError(async (req, res) => {
 const updatePassword = catchError(async (req, res) => {
   const { password, token } = req.body;
   const user = await Users.findOne({ where: { resetCode: token } });
-  if (!user) return res.status(401).json({ message: "Unauthorized" })
-  const data = jwt.verify(token, process.env.TOKEN_SECRET);
+  if (!user || !user.status) return res.status(401).json({ message: "Unauthorized" })
+  jwt.verify(token, process.env.TOKEN_SECRET);
   const hashedPassword = await bcrypt.hash(password, 10);
   await Users.update(
-    { password: hashedPassword, resetCode: null, passwordChangeAt: Date.now() },
-    { where: { id: data.user.id } }
+    { password: hashedPassword, resetCode: null, passwordChangeAt: Math.floor(Date.now() / 1000) },
+    { where: { id: user.id } }
   );
   res.status(201).json({ success: true });
+});
+
+// ENDPOINT DEL SISTEMA 4 --- OBTENER USUARIO LOGUEADO
+const getMe = catchError(async (req, res) => {
+  const { id } = req.user;
+  const sessionAge = req.iat
+  const user = await Users.findByPk(id);
+  if (user.passwordChangeAt > sessionAge || !user.status) return res.status(401).json({ message: "Unauthorized" });
+  res.json({success: true, user});
 });
 
 // ENDPOINT DEL SISTEMA 4 --- VERIFICAR EMAIL
@@ -81,13 +89,6 @@ const enableOrDisableUser = catchError(async (req, res) => {
   return res.status(204).json({ success: true });
 });
 
-// ENDPOINT DEL SISTEMA 8 --- OBTENER USUARIO LOGUEADO
-const getMe = catchError(async (req, res) => {
-  const { id } = req.user;
-  const user = await Users.findByPk(id);
-  if (!user.status){return res.status(401).json({ message: "Unauthorized" });}
-  res.json(user);
-});
 
 // ENDPOINT DEL SISTEMA 18 --- SOLICITUD PARA VERIFICAR EMAIL
 const requestEmailVerification = catchError(async (req, res) => {
