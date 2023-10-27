@@ -14,9 +14,9 @@ const categories = [
 
 const users = [
   { firstname: "Marco", lastname: 'Cardenas', email: 'marco2616@gmail.com', 
-  password: "12345678", role_id: 1 },
+  password: "12345678", roleId: 1 },
   { firstname: "Carmen", lastname: 'Gomez', email: 'carmenlg@gmail.com', 
-  password: "12345678", role_id: 1 }
+  password: "12345678", roleId: 1 }
 ]
 
 const role = [
