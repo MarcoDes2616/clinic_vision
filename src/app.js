@@ -1,10 +1,11 @@
 const express = require('express');
+const initModels = require("./models/");
 const helmet = require('helmet');
 const cors = require('cors');
 const router = require('./routes');
 const errorHandler = require('./utils/errorHandler');
 require('dotenv').config();
-
+initModels();
 // Esta es nuestra aplicación
 const app = express();
 

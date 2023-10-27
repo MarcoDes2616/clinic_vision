@@ -5,7 +5,7 @@ const Role = require('../models/Roles');
 const getAll = catchError(async(req, res) => {
     const isAdmin = req.isAdmin;
     if(!isAdmin) return res.sendStatus(401);
-    const results = await Users.findAll({include: [Role]});
+    const results = await Users.findAll({include: Role});
     return res.json(results);
 });
 
