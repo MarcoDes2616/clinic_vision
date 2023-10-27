@@ -1,5 +1,5 @@
-const { getAll, login, getMe, resetPaswwordMail, updatePassword, 
-    requestEmailVerification, verifyEmail, getOne, enableOrDisableUser } = require('../controllers/system.controllers');
+const { login, getMe, resetPaswwordMail, updatePassword, 
+    requestEmailVerification, verifyEmail, enableOrDisableUser } = require('../controllers/system.controllers');
 const express = require('express');
 const verifyJWT = require('../middlewares/auth.middleware');
 const isAdmin = require('../middlewares/isAdmin.middleware');
@@ -23,12 +23,9 @@ systemRouter.route("/verify_email")
 
 systemRouter.route("/verify_email/:token")
     .get(verifyEmail)
+ //system, requiere middleware de roles
 
-systemRouter.route("/users")
-    .get(isAdmin, getAll) //system, requiere middleware de roles
-
-systemRouter.route("/users/:id")
-    .get(isAdmin, getOne) //system, requiere middleware de roles
+systemRouter.route("/users/:id")//system, requiere middleware de roles
     .delete(isAdmin, enableOrDisableUser) //system, requiere middleware de roles
 
 

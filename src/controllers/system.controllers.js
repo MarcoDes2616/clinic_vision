@@ -53,7 +53,7 @@ const updatePassword = catchError(async (req, res) => {
 // ENDPOINT DEL SISTEMA 4 --- OBTENER USUARIO LOGUEADO
 const getMe = catchError(async (req, res) => {
   const { id } = req.user;
-  const sessionAge = req.iat
+  const sessionAge = req.iat;
   const user = await Users.findByPk(id);
   if (user.passwordChangeAt > sessionAge || !user.status) return res.status(401).json({ message: "Unauthorized" });
   res.json({success: true, user});
@@ -65,20 +65,6 @@ const verifyEmail = catchError(async (req, res) => {
   const data = jwt.verify(token, process.env.TOKEN_SECRET);
   await Users.update({ isVerified: true }, { where: { id: data.result.id } });
   res.json({ success: true });
-});
-
-// ENDPOINT DEL SISTEMA 5 --- OBTENER TODOS LOS USUARIOS
-const getAll = catchError(async (req, res) => {
-  const results = await Users.findAll({ include: [Pet], where: { roleId: 3 } });
-  return res.json(results)
-});
-
-// ENDPOINT DEL SISTEMA 6 --- OBTENER UN USUARIO
-const getOne = catchError(async (req, res) => {
-  const { id } = req.params;
-  const result = await Users.findByPk(id, { include: [Pet] });
-  if (!result) return res.sendStatus(404);
-  return res.json(result);
 });
 
 // ENDPOINT DEL SISTEMA 7 --- ACTIVAR O DESACTIVAR USUARIOS
@@ -113,8 +99,6 @@ module.exports = {
   resetPaswwordMail,
   updatePassword,
   verifyEmail,
-  getAll,
-  getOne,
   enableOrDisableUser,
   getMe,
   requestEmailVerification

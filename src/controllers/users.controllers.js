@@ -1,8 +1,11 @@
 const catchError = require('../utils/catchError');
 const Users = require('../models/Users');
+const Role = require('../models/Roles');
 
 const getAll = catchError(async(req, res) => {
-    const results = await Users.findAll();
+    const isAdmin = req.isAdmin;
+    if(!isAdmin) return res.sendStatus(401);
+    const results = await Users.findAll({include: [Role]});
     return res.json(results);
 });
 
