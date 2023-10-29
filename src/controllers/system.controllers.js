@@ -23,7 +23,7 @@ const login = catchError(async (req, res) => {
 const resetPaswwordMail = catchError(async (req, res) => {
   const { email } = req.body;
   const user = await Users.findOne({ where: { email } });
-  if (!user) return res.status(404).json({ message: "User no found" })
+  if (!user || !user.status) return res.status(404).json({ message: "User no found" })
   const tokenToVerify = jwt.sign({ user }, process.env.TOKEN_SECRET, {
     expiresIn: "1h"});
   await Users.update({ resetCode: tokenToVerify }, { where: { id: user.id } });
@@ -67,13 +67,6 @@ const verifyEmail = catchError(async (req, res) => {
   res.json({ success: true });
 });
 
-// ENDPOINT DEL SISTEMA 7 --- ACTIVAR O DESACTIVAR USUARIOS
-const enableOrDisableUser = catchError(async (req, res) => {
-  const { id } = req.params;
-  const user = await Users.findByPk(id);
-  await Users.update({ status: !user.status }, { where: { id } });
-  return res.status(204).json({ success: true });
-});
 
 
 // ENDPOINT DEL SISTEMA 18 --- SOLICITUD PARA VERIFICAR EMAIL
@@ -99,7 +92,6 @@ module.exports = {
   resetPaswwordMail,
   updatePassword,
   verifyEmail,
-  enableOrDisableUser,
   getMe,
   requestEmailVerification
 };

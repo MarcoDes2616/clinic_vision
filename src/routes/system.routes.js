@@ -23,10 +23,7 @@ systemRouter.route("/verify_email")
 
 systemRouter.route("/verify_email/:token")
     .get(verifyEmail)
- //system, requiere middleware de roles
 
-systemRouter.route("/users/:id")//system, requiere middleware de roles
-    .delete(isAdmin, enableOrDisableUser) //system, requiere middleware de roles
 
 
 module.exports = systemRouter;

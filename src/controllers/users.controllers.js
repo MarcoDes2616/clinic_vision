@@ -4,30 +4,35 @@ const Role = require('../models/Roles');
 
 const getAll = catchError(async(req, res) => {
     const isAdmin = req.isAdmin;
-    console.log(isAdmin);
     if(!isAdmin) return res.sendStatus(401);
-    const results = await Users.findAll({include:
+    const results = await Users.findAll({
+        include:
         {model: Role, attributes: ['name']}});
     return res.json(results);
 });
 
 const create = catchError(async(req, res) => {
-    const result = await Users.create(req.body);
-    return res.status(201).json(result);
+    const isAdmin = req.isAdmin;
+    if (!isAdmin) return res.status(401).json({ message: "Unauthorized" });
+    await Users.create(req.body);
+    return res.status(201).json({success: true});
 });
 
 const getOne = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Users.findByPk(id);
-    if(!result) return res.sendStatus(404);
-    return res.json(result);
+    const user = await Users.findByPk(id);
+    if(!user) return res.sendStatus(404);
+    return res.json(user);
 });
 
-const remove = catchError(async(req, res) => {
+const enableOrDisableUser = catchError(async (req, res) => {
+    const isAdmin = req.isAdmin;
+    if (!isAdmin) return res.status(401).json({ message: "Unauthorized" });
     const { id } = req.params;
-    await Users.destroy({ where: {id} });
-    return res.sendStatus(204);
-});
+    const user = await Users.findByPk(id);
+    await Users.update({ status: !user.status }, { where: { id } });
+    return res.status(204).json({ success: true });
+  });
 
 const update = catchError(async(req, res) => {
     const { id } = req.params;
@@ -43,6 +48,6 @@ module.exports = {
     getAll,
     create,
     getOne,
-    remove,
+    enableOrDisableUser,
     update
 }

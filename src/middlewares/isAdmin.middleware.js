@@ -7,7 +7,7 @@ const isAdmin = (req, res, next) => {
     const token = authHeader.split(' ')[1]; 
     try {
         const data = jwt.verify(token, process.env.TOKEN_SECRET);
-        if (data.user.roleId !== 1) {
+        if (data.user.roleId !== 1 || !data.user.status) {
             return res.status(401).json({ message: "Unauthorized" });
         }
         req.isAdmin = true;

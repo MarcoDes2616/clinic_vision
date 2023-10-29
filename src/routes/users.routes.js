@@ -1,4 +1,4 @@
-const { getAll, create, getOne, remove, update } = require('../controllers/users.controllers');
+const { getAll, create, getOne, enableOrDisableUser, update } = require('../controllers/users.controllers');
 const express = require('express');
 const isAdmin = require('../middlewares/isAdmin.middleware');
 
@@ -10,7 +10,7 @@ userRouter.route('/')
 
 userRouter.route('/:id')
     .get(isAdmin, getOne)
-    .delete(isAdmin, remove)
+    .delete(isAdmin, enableOrDisableUser)
     .put(isAdmin, update);
 
 module.exports = userRouter;
