@@ -1,11 +1,11 @@
 const Users = require("./Users");
 const Role = require("./Roles");
-const Patient = require("./Patients");
+const Patient = require("./Patient");
 const Sponsorship = require("./Sponsorship");
 const ClinicHistory = require("./ClinicHistory");
 const Attention = require("./Attention");
-const Location = require("./Locations");
-const Measurement = require("./Measurements");
+const Location = require("./Location");
+const Measurement = require("./Measurement");
 const Prescription = require("./Prescription");
 
 const initModels = () => {
