@@ -4,35 +4,35 @@ const sequelize = require('../utils/connection');
 const Measurement = sequelize.define('Measurements', {
     scl_od: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     scl_oi: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     scc_od: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     scc_oi: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     ccl_od: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     ccl_oi: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     ccc_od: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     ccc_oi: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     }
 });
 

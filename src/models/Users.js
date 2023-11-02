@@ -33,12 +33,7 @@ const Users = sequelize.define(
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    },
-    roleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 3,
-    },
+    }
   },
   {
     timestamps: true,
