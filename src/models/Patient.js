@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, STRING, BOOLEAN } = require('sequelize');
 const sequelize = require('../utils/connection');
 
 const Patient = sequelize.define('patients', {
@@ -30,7 +30,15 @@ const Patient = sequelize.define('patients', {
     },
     phone: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    address: {
+        type: STRING,
         allowNull: true
+    },
+    status: {
+        type: BOOLEAN,
+        defaultValue: true,
     }
 });
 
