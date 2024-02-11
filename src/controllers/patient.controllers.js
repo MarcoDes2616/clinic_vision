@@ -1,6 +1,8 @@
 const catchError = require('../utils/catchError');
 const Patient = require('../models/Patient');
 const Sponsorship = require('../models/Sponsorship');
+const ClinicHistory = require('../models/ClinicHistory');
+const { where } = require('sequelize');
 
 const getAllPatient = catchError(async(req, res) => {
     const results = await Patient.findAll({
@@ -10,14 +12,30 @@ const getAllPatient = catchError(async(req, res) => {
             model: Sponsorship,
             attributes: ['sponsor']
         },
+        include: {
+            model: ClinicHistory,
+            attributes: {exclude: ["patientId"]}
+        },
         order: [['id', 'ASC']]
     });
     return res.json(results);
 });
 
 const createPatient = catchError(async(req, res) => {
-    const result = await Patient.create(req.body);
-    return res.status(201).json(result);
+    const {previousMedical, ...restOfData} = req.body
+    const {id} = await Patient.create(restOfData);
+    try {
+        const dataClinicHistory = {
+            patientId: id,
+            previousMedical 
+        }
+        await ClinicHistory.create(dataClinicHistory)
+    } catch (error) {
+        await Patient.destroy({where: {id}})
+        return res.status(409).json({result: "conflict", error: error.original})
+    }
+
+    return res.status(201).json({ success: true });
 });
 
 const getOnePatient = catchError(async(req, res) => {

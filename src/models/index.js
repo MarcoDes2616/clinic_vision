@@ -18,9 +18,17 @@ const initModels = () => {
   Sponsorship.hasMany(Patient, { foreignKey: "sponsorshipId" });
   Patient.belongsTo(Sponsorship, { foreignKey: "sponsorshipId" });
   
-  // patients 1 ----- * clinicHistory
+  // patients 1 ----- 1 clinicHistory
   Patient.hasOne(ClinicHistory, { foreignKey: "patientId" });
   ClinicHistory.belongsTo(Patient, { foreignKey: "patientId" });
+  
+  // measurements 1 ----- 1 attention
+  Measurement.hasOne(Attention, { foreignKey: "measurementId" });
+  Attention.belongsTo(Measurement, { foreignKey: "measurementId" });
+  
+  // prescription 1 ----- 1 attention
+  Prescription.hasOne(Attention, { foreignKey: "prescriptionId" });
+  Attention.belongsTo(Prescription, { foreignKey: "prescriptionId" });
   
   // locations 1 ----- * attention
   Location.hasMany(Attention, { foreignKey: "locationId" });
@@ -33,14 +41,6 @@ const initModels = () => {
   // users 1 ----- * attention
   Users.hasMany(Attention, { foreignKey: "userId" });
   Attention.belongsTo(Users, { foreignKey: "userId" });
-
-  // measurements 1 ----- 1 attention
-  Attention.hasOne(Measurement, { foreignKey: "attentionId" });
-  Measurement.belongsTo(Attention, { foreignKey: "attentionId" });
-
-  // prescription 1 ----- * attention
-  Attention.hasOne(Prescription, { foreignKey: "attentionId" });
-  Prescription.belongsTo(Attention, { foreignKey: "attentionId" });
 };
 
 module.exports = initModels;

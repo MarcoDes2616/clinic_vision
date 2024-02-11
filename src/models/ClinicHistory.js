@@ -8,8 +8,11 @@ const ClinicHistory = sequelize.define('clinicHistory', {
     },
     lastAttention: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     }
+},
+{
+    timestamps: false
 });
 
 module.exports = ClinicHistory;
