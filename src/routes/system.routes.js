@@ -1,5 +1,5 @@
 const { login, getMe, resetPaswwordMail, updatePassword, 
-    requestEmailVerification, verifyEmail, enableOrDisableUser } = require('../controllers/system.controllers');
+    requestEmailVerification, verifyEmail } = require('../controllers/system.controllers');
 const express = require('express');
 const verifyJWT = require('../middlewares/auth.middleware');
 const isAdmin = require('../middlewares/isAdmin.middleware');
