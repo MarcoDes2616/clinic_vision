@@ -8,14 +8,16 @@ const getAllPatient = catchError(async(req, res) => {
     const results = await Patient.findAll({
         where: {status: true},
         attributes: { exclude: ['sponsorshipId'] },
-        include: {
-            model: Sponsorship,
-            attributes: ['sponsor']
-        },
-        include: {
-            model: ClinicHistory,
-            attributes: {exclude: ["patientId"]}
-        },
+        include: [
+            {
+                model: Sponsorship,
+                attributes: ['sponsor'],
+            },
+            {
+                model: ClinicHistory,
+                attributes: {exclude: ["patientId"]}
+            }
+        ],
         order: [['id', 'ASC']]
     });
     return res.json(results);
@@ -42,10 +44,17 @@ const getOnePatient = catchError(async(req, res) => {
     const { id } = req.params;
     const result = await Patient.findByPk(id, {
         attributes: { exclude: ['sponsorshipId'] },
-        include: {
-            model: Sponsorship,
-            attributes: ['sponsor']
-        }});
+        include: [
+            {
+                model: Sponsorship,
+                attributes: ['sponsor'],
+            },
+            {
+                model: ClinicHistory,
+                attributes: {exclude: ["patientId"]}
+            }
+        ],
+    });
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });

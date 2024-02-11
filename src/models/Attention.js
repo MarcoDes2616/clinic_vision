@@ -3,17 +3,19 @@ const sequelize = require('../utils/connection');
 
 const Attention = sequelize.define('attentions', {
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     diagnosis: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     observations: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
+},{
+    updatedAt: false
 });
 
 module.exports = Attention;

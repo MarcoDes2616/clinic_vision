@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Measurement = sequelize.define('Measurements', {
+const Measurement = sequelize.define('measurements', {
     scl_od: {
         type: DataTypes.STRING,
         allowNull: false
@@ -34,6 +34,9 @@ const Measurement = sequelize.define('Measurements', {
         type: DataTypes.STRING,
         allowNull: false
     }
+},
+{
+    timestamps: false
 });
 
 module.exports = Measurement;

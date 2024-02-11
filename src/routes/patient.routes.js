@@ -7,17 +7,17 @@ const {
 } = require("../controllers/patient.controllers");
 const express = require("express");
 const isAdmin = require("../middlewares/isAdmin.middleware");
+const verifyJWT = require("../middlewares/auth.middleware");
 
 const patientRouter = express.Router();
 
 patientRouter.route("/")
-    .get(getAllPatient)
-    .post(createPatient);
+    .get(verifyJWT, getAllPatient)
+    .post(verifyJWT, createPatient);
 
-patientRouter
-    .route("/:id")
-    .get(getOnePatient)
+patientRouter.route("/:id")
+    .get(verifyJWT, getOnePatient)
     .delete(isAdmin, removePatient)
-    .put(updatePatient);
+    .put(verifyJWT, updatePatient);
 
 module.exports = patientRouter;

@@ -7,8 +7,12 @@ const ClinicHistory = sequelize.define('clinicHistory', {
         allowNull: false
     },
     lastAttention: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true
+    },
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 },
 {
