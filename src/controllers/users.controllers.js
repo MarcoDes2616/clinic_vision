@@ -7,7 +7,9 @@ const getAll = catchError(async(req, res) => {
     if(!isAdmin) return res.sendStatus(401);
     const results = await Users.findAll({
         include:
-        {model: Role, attributes: ['name']}});
+        {model: Role, attributes: ['name']},
+        order: [['id', 'ASC']]
+    });
     return res.json(results);
 });
 

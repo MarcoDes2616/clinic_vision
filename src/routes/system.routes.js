@@ -2,7 +2,6 @@ const { login, getMe, resetPaswwordMail, updatePassword,
     requestEmailVerification, verifyEmail } = require('../controllers/system.controllers');
 const express = require('express');
 const verifyJWT = require('../middlewares/auth.middleware');
-const isAdmin = require('../middlewares/isAdmin.middleware');
 
 const systemRouter = express.Router();
 

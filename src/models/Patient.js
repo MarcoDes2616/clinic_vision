@@ -26,7 +26,7 @@ const Patient = sequelize.define('patients', {
     },
     company: {
         type: DataTypes.STRING,
-        allowNull: true
+        defaultValue: "N/A"
     },
     phone: {
         type: DataTypes.STRING,
