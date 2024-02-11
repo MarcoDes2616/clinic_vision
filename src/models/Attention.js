@@ -15,7 +15,7 @@ const Attention = sequelize.define('attentions', {
         allowNull: true
     }
 },{
-    updatedAt: false
+    timestamps: false
 });
 
 module.exports = Attention;

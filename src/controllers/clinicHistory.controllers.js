@@ -6,6 +6,7 @@ const Measurement = require('../models/Measurement');
 const Location = require('../models/Location');
 const Prescription = require('../models/Prescription');
 const Users = require('../models/Users');
+const Sponsorship = require('../models/Sponsorship');
 
 const getAllClinicHistory = catchError(async(req, res) => {
     const results = await ClinicHistory.findAll({
@@ -26,7 +27,11 @@ const getOneClinicHistory = catchError(async(req, res) => {
         include: [
             {
                 model: Patient,
-                attributes: ["id", "documentNumber", "firstname", "lastname"]
+                attributes: {exclude: ["sponsorshipId", "createdAt", "updatedAt", "status"]},
+                include: {
+                    model: Sponsorship,
+
+                }
             },
             {
                 model: Attention,

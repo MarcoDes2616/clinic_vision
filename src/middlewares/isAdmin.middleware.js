@@ -6,11 +6,12 @@ const isAdmin = (req, res, next) => {
     if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
     const token = authHeader.split(' ')[1]; 
     try {
-        const data = jwt.verify(token, process.env.TOKEN_SECRET);
-        if (data.user.roleId !== 1 || !data.user.status) {
+        const { user } = jwt.verify(token, process.env.TOKEN_SECRET);
+        if (user.roleId !== 1 || !user.status) {
             return res.status(401).json({ message: "Unauthorized" });
         }
         req.isAdmin = true;
+        req.user = user
         next();
     } catch (err) {
         return res.status(401).json({ message: "Invalid token" });
