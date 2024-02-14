@@ -10,7 +10,6 @@ const getAllPatient = catchError(async(req, res) => {
         include: [
             {
                 model: Sponsorship,
-                attributes: ['sponsor'],
             },
             {
                 model: ClinicHistory,
