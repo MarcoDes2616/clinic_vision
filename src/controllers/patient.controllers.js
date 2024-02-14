@@ -13,7 +13,7 @@ const getAllPatient = catchError(async(req, res) => {
             },
             {
                 model: ClinicHistory,
-                attributes: ["id"]
+                attributes: ["id", "previousMedical"]
             }
         ],
         order: [['id', 'ASC']]
