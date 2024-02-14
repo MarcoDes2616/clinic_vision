@@ -5,6 +5,8 @@ const locationRouter = require('./location.routes');
 const patientRouter = require('./patient.routes');
 const clinicHistoryRouter = require('./clinicHistory.routes');
 const attentionRouter = require('./attention.routes');
+const measurementRouter = require('./measurement.routes');
+const prescriptionRouter = require('./prescription.routes');
 const router = express.Router();
 
 // colocar las rutas aquí
@@ -19,5 +21,9 @@ router.use("/patient", patientRouter)
 router.use("/clinic-history", clinicHistoryRouter)
 
 router.use("/attention", attentionRouter)
+
+router.use("/measurement", measurementRouter)
+
+router.use("/prescription", prescriptionRouter)
 
 module.exports = router;

@@ -19,8 +19,7 @@ const Prescription = sequelize.define('prescriptions', {
         allowNull: false
     }
 },{
-    updatedAt: false,
-    createdAt: true
+    timestamps: false
 });
 
 module.exports = Prescription;

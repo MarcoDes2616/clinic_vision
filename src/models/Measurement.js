@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Measurement = sequelize.define('measurements', {
+const Measurement = sequelize.define('measurement', {
     scl_od: {
         type: DataTypes.STRING,
         allowNull: false

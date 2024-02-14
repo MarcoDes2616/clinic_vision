@@ -2,11 +2,11 @@ const catchError = require('../utils/catchError');
 const ClinicHistory = require('../models/ClinicHistory');
 const Patient = require('../models/Patient');
 const Attention = require('../models/Attention');
-const Measurement = require('../models/Measurement');
 const Location = require('../models/Location');
 const Prescription = require('../models/Prescription');
 const Users = require('../models/Users');
 const Sponsorship = require('../models/Sponsorship');
+const Measurement = require('../models/Measurement');
 
 const getAllClinicHistory = catchError(async(req, res) => {
     const results = await ClinicHistory.findAll({
@@ -30,12 +30,11 @@ const getOneClinicHistory = catchError(async(req, res) => {
                 attributes: {exclude: ["sponsorshipId", "createdAt", "updatedAt", "status"]},
                 include: {
                     model: Sponsorship,
-
                 }
             },
             {
                 model: Attention,
-                attributes: { exclude: ["measurementId", "prescriptionId", "locationId", "clinicHistoryId", "userId"]},
+                attributes: { exclude: ["locationId", "clinicHistoryId", "userId"]},
                 include: [
                     {
                         model: Users,
@@ -46,9 +45,11 @@ const getOneClinicHistory = catchError(async(req, res) => {
                     },
                     {
                         model: Prescription,
+                        attributes: {exclude: ["attentionId"]}
                     },
                     {
                         model: Measurement,
+                        attributes: {exclude: ["attentionId"]}
                     },
                 ]
             }

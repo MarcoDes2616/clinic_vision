@@ -5,8 +5,8 @@ const Sponsorship = require("./Sponsorship");
 const ClinicHistory = require("./ClinicHistory");
 const Attention = require("./Attention");
 const Location = require("./Location");
-const Measurement = require("./Measurement");
 const Prescription = require("./Prescription");
+const Measurement = require("./Measurement");
 
 const initModels = () => {
 
@@ -23,12 +23,12 @@ const initModels = () => {
   ClinicHistory.belongsTo(Patient, { foreignKey: "patientId" });
   
   // measurements 1 ----- 1 attention
-  Measurement.hasOne(Attention, { foreignKey: "measurementId" });
-  Attention.belongsTo(Measurement, { foreignKey: "measurementId" });
+  Attention.hasOne(Measurement, { foreignKey: "attentionId" });
+  Measurement.belongsTo(Attention, { foreignKey: "attentionId" });
   
   // prescription 1 ----- 1 attention
-  Prescription.hasOne(Attention, { foreignKey: "prescriptionId" });
-  Attention.belongsTo(Prescription, { foreignKey: "prescriptionId" });
+  Attention.hasOne(Prescription, { foreignKey: "attentionId" });
+  Prescription.belongsTo(Attention, { foreignKey: "attentionId" });
   
   // locations 1 ----- * attention
   Location.hasMany(Attention, { foreignKey: "locationId" });
