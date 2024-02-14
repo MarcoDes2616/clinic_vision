@@ -2,12 +2,11 @@ const catchError = require('../utils/catchError');
 const Patient = require('../models/Patient');
 const Sponsorship = require('../models/Sponsorship');
 const ClinicHistory = require('../models/ClinicHistory');
-const { where } = require('sequelize');
 
 const getAllPatient = catchError(async(req, res) => {
     const results = await Patient.findAll({
         where: {status: true},
-        attributes: { exclude: ['sponsorshipId'] },
+        attributes: { exclude: ['sponsorshipId', "createdAt", "updatedAt"] },
         include: [
             {
                 model: Sponsorship,
@@ -15,7 +14,7 @@ const getAllPatient = catchError(async(req, res) => {
             },
             {
                 model: ClinicHistory,
-                attributes: {exclude: ["patientId"]}
+                attributes: ["id"]
             }
         ],
         order: [['id', 'ASC']]

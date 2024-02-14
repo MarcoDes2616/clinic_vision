@@ -15,7 +15,8 @@ const getAllClinicHistory = catchError(async(req, res) => {
         include: {
             model: Patient,
             attributes: ["id", "documentNumber", "firstname", "lastname"]
-        }
+        },
+        order: [['id', 'ASC']]
     });
     return res.json(results);
 });
@@ -51,7 +52,8 @@ const getOneClinicHistory = catchError(async(req, res) => {
                         model: Measurement,
                         attributes: {exclude: ["attentionId"]}
                     },
-                ]
+                ],
+                order: [['id', 'DESC']]
             }
         ]
     });
