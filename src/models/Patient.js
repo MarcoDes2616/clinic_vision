@@ -36,6 +36,10 @@ const Patient = sequelize.define('patients', {
         type: STRING,
         allowNull: true
     },
+    sex: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     status: {
         type: BOOLEAN,
         defaultValue: true,

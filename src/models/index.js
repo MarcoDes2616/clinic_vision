@@ -33,6 +33,10 @@ const initModels = () => {
   // locations 1 ----- * attention
   Location.hasMany(Attention, { foreignKey: "locationId" });
   Attention.belongsTo(Location, { foreignKey: "locationId" });
+
+  // sponsorship 1 ----- * locations
+  Sponsorship.hasMany(Location, { foreignKey: "sponsorshipId" });
+  Location.belongsTo(Sponsorship, { foreignKey: "sponsorshipId" });
   
   // clinicHistory 1 ----- * attention
   ClinicHistory.hasMany(Attention, { foreignKey: "clinicHistoryId" });
