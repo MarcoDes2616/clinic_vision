@@ -1,8 +1,14 @@
 const catchError = require('../utils/catchError');
 const Location = require('../models/Location');
+const Sponsorship = require('../models/Sponsorship');
 
 const getAll = catchError(async(req, res) => {
-    const results = await Location.findAll();
+    const results = await Location.findAll({
+        include: {
+            model: Sponsorship,
+            attributes: ["sponsor"]
+        }
+    });
     return res.json(results);
 });
 
