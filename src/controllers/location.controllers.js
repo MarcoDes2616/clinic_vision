@@ -7,14 +7,15 @@ const getAll = catchError(async(req, res) => {
         include: {
             model: Sponsorship,
             attributes: ["sponsor"]
-        }
+        },
+        order: [['id', 'DESC']]
     });
     return res.json(results);
 });
 
 const create = catchError(async(req, res) => {
-    const result = await Location.create(req.body);
-    return res.status(201).json(result);
+    await Location.create(req.body);
+    return res.status(201).json({ success: true});
 });
 
 const getOne = catchError(async(req, res) => {
