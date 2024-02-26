@@ -44,7 +44,7 @@ const removeAttention = catchError(async(req, res) => {
 
 const updateAttention = catchError(async(req, res) => {
     const { id } = req.params;
-    const {userId, clinicHistoryId, locationId, restOfData} = req.body
+    const {userId, clinicHistoryId, locationId, date, ...restOfData} = req.body
     const result = await Attention.update(
         restOfData,
         { where: {id}, returning: true }
