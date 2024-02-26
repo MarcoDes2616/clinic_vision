@@ -1,9 +1,21 @@
 const catchError = require('../utils/catchError');
 const Location = require('../models/Location');
 const Sponsorship = require('../models/Sponsorship');
+const { where } = require('sequelize');
 
 const getAll = catchError(async(req, res) => {
+    let {sponsorship: sponsorshipId} = req.query
+
+    const handleQueries = () => {
+        if (sponsorshipId) {
+            return {sponsorshipId: sponsorshipId} 
+        } else {
+            return null
+        }
+    }
+    console.log(handleQueries());
     const results = await Location.findAll({
+        where: handleQueries(),
         include: {
             model: Sponsorship,
             attributes: ["sponsor"]
