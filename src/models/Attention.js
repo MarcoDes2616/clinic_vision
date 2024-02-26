@@ -13,6 +13,14 @@ const Attention = sequelize.define('attentions', {
     observations: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    requireLenses: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
+    },
+    lensesType: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 },{
     timestamps: false
