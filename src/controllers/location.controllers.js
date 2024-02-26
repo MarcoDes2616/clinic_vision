@@ -13,7 +13,6 @@ const getAll = catchError(async(req, res) => {
             return null
         }
     }
-    console.log(handleQueries());
     const results = await Location.findAll({
         where: handleQueries(),
         include: {
