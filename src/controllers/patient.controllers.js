@@ -16,7 +16,7 @@ const getAllPatient = catchError(async(req, res) => {
                 attributes: ["id", "previousMedical"]
             }
         ],
-        order: [['id', 'ASC']]
+        order: [['id', 'DESC']]
     });
     return res.json(results);
 });
