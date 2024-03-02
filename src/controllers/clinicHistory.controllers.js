@@ -16,7 +16,7 @@ const getAllClinicHistory = catchError(async(req, res) => {
             model: Patient,
             attributes: ["id", "documentNumber", "firstname", "lastname"]
         },
-        order: [['id', 'ASC']]
+        order: [['id', 'DESC']]
     });
     return res.json(results);
 });
