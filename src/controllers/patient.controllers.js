@@ -2,10 +2,22 @@ const catchError = require('../utils/catchError');
 const Patient = require('../models/Patient');
 const Sponsorship = require('../models/Sponsorship');
 const ClinicHistory = require('../models/ClinicHistory');
+const { Op } = require("sequelize");
 
 const getAllPatient = catchError(async(req, res) => {
+    let { search } = req.query;
+
+    let condition = search 
+      ? {
+          [Op.or]: [
+            { '$documentNumber$': { [Op.iLike]: `%${search}%` } },
+            { '$firstname$': { [Op.iLike]: `%${search}%` } },
+            { '$lastname$': { [Op.iLike]: `%${search}%` } },
+          ]
+        }
+      : { status: true };
     const results = await Patient.findAll({
-        where: {status: true},
+        where: condition,
         attributes: { exclude: ['sponsorshipId', "createdAt", "updatedAt"] },
         include: [
             {
