@@ -5,9 +5,9 @@ const Location = require("../models/Location");
 const Sponsorship = require("../models/Sponsorship");
 require("../models");
 
-const role = [{ name: "s admin" }, { name: "admin" }, { name: "profesional" }];
+const role = [{ name: "S admin" }, { name: "Admin" }, { name: "Profesional" }];
 
-const location = [{name: "Batán"}, {name: "Brigada maravilla"}, {name: "Colón"}]
+const location = [{name: "Batán"}, {name: "Colón"}]
 
 const sponsor = [{sponsor: "Batán"}, {sponsor: "colón"}]
 
@@ -22,7 +22,14 @@ const users = [
   {
     firstname: "Carmen",
     lastname: "Gomez",
-    email: "carmenlg@gmail.com",
+    email: "carmenluisag2011@gmail.com",
+    password: "12345678",
+    roleId: 1,
+  },
+  {
+    firstname: "Carlos",
+    lastname: "Messier",
+    email: "messiercarlos1@gmail.com",
     password: "12345678",
     roleId: 1,
   },
