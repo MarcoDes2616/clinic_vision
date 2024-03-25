@@ -3,7 +3,7 @@ const Users = require("../models/Users");
 const Role = require("../models/Roles");
 const Location = require("../models/Location");
 const Sponsorship = require("../models/Sponsorship");
-require("../models");
+const initModels = require('../models');
 
 const role = [{ name: "S admin" }, { name: "Admin" }, { name: "Profesional" }];
 
@@ -44,6 +44,7 @@ async function seedCreate() {
 }
 
 // agregar force: true a la configuración de Sequelize
+initModels()
 sequelize
   .sync({ force: true })
   .then(async () => {
