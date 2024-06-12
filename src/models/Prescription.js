@@ -17,7 +17,23 @@ const Prescription = sequelize.define('prescriptions', {
     oi_add: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    od_used: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    od_add_used: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    oi_used: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    oi_add_used: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 },{
     timestamps: false
 });
