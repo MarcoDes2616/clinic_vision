@@ -2,6 +2,7 @@ const catchError = require('../utils/catchError');
 const Attention = require('../models/Attention');
 const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
+const Prescription = require('../models/Prescription');
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
@@ -22,11 +23,12 @@ const createAttention = catchError(async(req, res) => {
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: clinicHistoryId}
         })
+        await Prescription.create({attentionId: result.id})
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
         return res.status(409).json({result: "conflict", error})
     }
-    return res.status(201).json(result);
+    return res.status(201).json({success: true});
 });
 
 const getOneAttention = catchError(async(req, res) => {

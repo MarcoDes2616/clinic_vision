@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendMail");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-const { Op } = require('sequelize');
 
 //ENDPOINT SYSTEM 1 --- LOGIN
 const login = catchError(async (req, res) => {
