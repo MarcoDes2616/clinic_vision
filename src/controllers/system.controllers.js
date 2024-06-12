@@ -10,7 +10,7 @@ const { Op } = require('sequelize');
 const login = catchError(async (req, res) => {
   const { email, password } = req.body;
   const user = await Users.findOne({ where: { email } });
-  if (!user || !user.status) return res.status(404).json({ message: "user not found or disabled" });
+  if (!user || !user?.status) return res.status(404).json({ message: "user not found or disabled" });
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return res.status(401).json({ message: "Invalid credentials" });
   const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
