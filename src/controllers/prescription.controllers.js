@@ -7,7 +7,7 @@ const getAllPrescription = catchError(async(req, res) => {
 });
 
 const createPrescription = catchError(async(req, res) => {
-    const result = await Prescription.create(req.body);
+    await Prescription.create(req.body);
     return res.status(201).json({success: true});
 });
 

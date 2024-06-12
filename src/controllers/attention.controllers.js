@@ -22,11 +22,12 @@ const createAttention = catchError(async(req, res) => {
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: clinicHistoryId}
         })
+        await Prescription.create({attentionId: result.id})
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
         return res.status(409).json({result: "conflict", error})
     }
-    return res.status(201).json(result);
+    return res.status(201).json({success: true});
 });
 
 const getOneAttention = catchError(async(req, res) => {
