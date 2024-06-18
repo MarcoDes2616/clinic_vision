@@ -3,6 +3,7 @@ const Attention = require('../models/Attention');
 const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
 const Prescription = require('../models/Prescription');
+const RxUse = require('../models/RxUse');
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
@@ -10,7 +11,7 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {clinicHistoryId, locationId} = req.body
+    const {clinicHistoryId, locationId, restOfData} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
@@ -19,7 +20,7 @@ const createAttention = catchError(async(req, res) => {
         locationId
     }
     const result = await Attention.create(data);
-    await Prescription.create({attentionId: result.id})
+    await RxUse.create({...restOfData,attentionId: result.id})
     try {
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: clinicHistoryId}
