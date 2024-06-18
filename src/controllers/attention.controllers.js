@@ -6,6 +6,7 @@ const RxUse = require('../models/RxUse');
 const Users = require('../models/Users');
 const Prescription = require('../models/Prescription');
 const Measurement = require('../models/Measurement');
+const Location = require('../models/Location');
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
