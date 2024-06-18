@@ -3,10 +3,8 @@ const ClinicHistory = require('../models/ClinicHistory');
 const Patient = require('../models/Patient');
 const Attention = require('../models/Attention');
 const Location = require('../models/Location');
-const Prescription = require('../models/Prescription');
 const Users = require('../models/Users');
 const Sponsorship = require('../models/Sponsorship');
-const Measurement = require('../models/Measurement');
 
 const getAllClinicHistory = catchError(async(req, res) => {
     const results = await ClinicHistory.findAll({
@@ -43,15 +41,7 @@ const getOneClinicHistory = catchError(async(req, res) => {
                     },
                     {
                         model: Location,
-                    },
-                    {
-                        model: Prescription,
-                        attributes: {exclude: ["attentionId"]}
-                    },
-                    {
-                        model: Measurement,
-                        attributes: {exclude: ["attentionId"]}
-                    },
+                    }
                 ],
                 order: [['id', 'DESC']]
             }

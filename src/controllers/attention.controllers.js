@@ -2,8 +2,10 @@ const catchError = require('../utils/catchError');
 const Attention = require('../models/Attention');
 const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
-const Prescription = require('../models/Prescription');
 const RxUse = require('../models/RxUse');
+const Users = require('../models/Users');
+const Prescription = require('../models/Prescription');
+const Measurement = require('../models/Measurement');
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
@@ -11,7 +13,7 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {clinicHistoryId, locationId, restOfData} = req.body
+    const {clinicHistoryId, locationId, ...restOfData} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
@@ -20,8 +22,8 @@ const createAttention = catchError(async(req, res) => {
         locationId
     }
     const result = await Attention.create(data);
-    await RxUse.create({...restOfData,attentionId: result.id})
     try {
+        await RxUse.create({...restOfData, attentionId: result.id})
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: clinicHistoryId}
         })
@@ -30,12 +32,33 @@ const createAttention = catchError(async(req, res) => {
         await Attention.destroy({where: {id: result.id}})
         return res.status(409).json({result: "conflict", error})
     }
-    return res.status(201).json({success: true});
+    return res.status(201).json({success: true, attentionId: result.id});
 });
 
 const getOneAttention = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Attention.findByPk(id);
+    const result = await Attention.findByPk(id, {
+        include: [
+            {
+                model: Users,
+                attributes: ["id", "firstname", "lastname"]
+            },
+            {
+                model: Location,
+            },
+            {
+                model: RxUse,
+            },
+            {
+                model: Prescription,
+                attributes: {exclude: ["attentionId"]}
+            },
+            {
+                model: Measurement,
+                attributes: {exclude: ["attentionId"]}
+            },
+        ],
+    });
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });
