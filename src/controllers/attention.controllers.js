@@ -7,6 +7,7 @@ const Users = require('../models/Users');
 const Prescription = require('../models/Prescription');
 const Measurement = require('../models/Measurement');
 const Location = require('../models/Location');
+const Patient = require('../models/Patient');
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
@@ -39,10 +40,18 @@ const createAttention = catchError(async(req, res) => {
 const getOneAttention = catchError(async(req, res) => {
     const { id } = req.params;
     const result = await Attention.findByPk(id, {
+        attributes: {exclude: ["userId", "locationId", "clinicHistoryId"]},
         include: [
             {
                 model: Users,
                 attributes: ["id", "firstname", "lastname"]
+            },
+            {
+                model: ClinicHistory,
+                attributes: ["id"],
+                include: {
+                    model: Patient
+                }
             },
             {
                 model: Location,
