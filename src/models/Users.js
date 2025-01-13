@@ -21,6 +21,7 @@ const Users = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "12345678"
     },
     resetCode: {
       type: DataTypes.TEXT,
