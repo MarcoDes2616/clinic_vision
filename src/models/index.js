@@ -7,6 +7,7 @@ const Attention = require("./Attention");
 const Location = require("./Location");
 const Prescription = require("./Prescription");
 const Measurement = require("./Measurement");
+const RxUse = require("./RxUse");
 
 const initModels = () => {
 
@@ -29,6 +30,10 @@ const initModels = () => {
   // prescription 1 ----- 1 attention
   Attention.hasOne(Prescription, { foreignKey: "attentionId" });
   Prescription.belongsTo(Attention, { foreignKey: "attentionId" });
+
+   // prescription 1 ----- 1 attention
+   Attention.hasOne(RxUse, { foreignKey: "attentionId" });
+   RxUse.belongsTo(Attention, { foreignKey: "attentionId" });
   
   // locations 1 ----- * attention
   Location.hasMany(Attention, { foreignKey: "locationId" });

@@ -25,10 +25,10 @@ const removePrescription = catchError(async(req, res) => {
 });
 
 const updatePrescription = catchError(async(req, res) => {
-    const { id } = req.params;
+    const { id: attentionId } = req.params;
     const result = await Prescription.update(
         req.body,
-        { where: {id}, returning: true }
+        { where: {attentionId}, returning: true }
     );
     if(result[0] === 0) return res.sendStatus(404);
     return res.json(result[1][0]);

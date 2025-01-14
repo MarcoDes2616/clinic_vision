@@ -5,32 +5,29 @@ const Location = require("../models/Location");
 const Sponsorship = require("../models/Sponsorship");
 const initModels = require('../models');
 
-const role = [{ name: "S admin" }, { name: "Admin" }, { name: "Profesional" }];
+const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
 
-const location = [{name: "Batán"}, {name: "Colón"}]
+const location = [{name: "Batán"}, {name: "Sur"}, {name: "Colón"}]
 
-const sponsor = [{sponsor: "Batán"}, {sponsor: "colón"}]
+const sponsor = [{sponsor: "Med-Expert"}, {sponsor: "Visión CC"}]
 
 const users = [
   {
     firstname: "Marco",
     lastname: "Cardenas",
     email: "marco2616@gmail.com",
-    password: "12345678",
     roleId: 1,
   },
   {
-    firstname: "Carmen",
-    lastname: "Gomez",
-    email: "carmenluisag2011@gmail.com",
-    password: "12345678",
-    roleId: 1,
+    firstname: "Administrador del",
+    lastname: "Sistema",
+    email: "opticavision.info@gmail.com",
+    roleId: 2,
   },
   {
     firstname: "Carlos",
     lastname: "Messier",
     email: "messiercarlos1@gmail.com",
-    password: "12345678",
     roleId: 1,
   },
 ];
@@ -38,9 +35,9 @@ const users = [
 
 async function seedCreate() {
   await Role.bulkCreate(role);
-  await Users.bulkCreate(users);
   await Location.bulkCreate(location)
   await Sponsorship.bulkCreate(sponsor)
+  await Users.bulkCreate(users);
 }
 
 // agregar force: true a la configuración de Sequelize

@@ -10,7 +10,7 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {clinicHistoryId, locationId} = req.body
+    const {clinicHistoryId, locationId, ...restOfData} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
@@ -20,20 +20,50 @@ const createAttention = catchError(async(req, res) => {
     }
     const result = await Attention.create(data);
     try {
+        await RxUse.create({...restOfData, attentionId: result.id})
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: clinicHistoryId}
         })
-        await Prescription.create({attentionId: result.id})
+        
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
         return res.status(409).json({result: "conflict", error})
     }
-    return res.status(201).json({success: true});
+    return res.status(201).json({success: true, attentionId: result.id});
 });
 
 const getOneAttention = catchError(async(req, res) => {
     const { id } = req.params;
-    const result = await Attention.findByPk(id);
+    const result = await Attention.findByPk(id, {
+        attributes: {exclude: ["userId", "locationId", "clinicHistoryId"]},
+        include: [
+            {
+                model: Users,
+                attributes: ["id", "firstname", "lastname"]
+            },
+            {
+                model: ClinicHistory,
+                attributes: ["id"],
+                include: {
+                    model: Patient
+                }
+            },
+            {
+                model: Location,
+            },
+            {
+                model: RxUse,
+            },
+            {
+                model: Prescription,
+                attributes: {exclude: ["attentionId"]}
+            },
+            {
+                model: Measurement,
+                attributes: {exclude: ["attentionId"]}
+            },
+        ],
+    });
     if(!result) return res.sendStatus(404);
     return res.json(result);
 });

@@ -1,25 +1,25 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Prescription = sequelize.define('prescriptions', {
-    od: {
+const RxUse = sequelize.define('rx_uses', {
+    od_used: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    od_add: {
+    od_add_used: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    oi: {
+    oi_used: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    oi_add: {
+    oi_add_used: {
         type: DataTypes.STRING,
         allowNull: true
-    }
+    },
 },{
     timestamps: false
 });
 
-module.exports = Prescription;
+module.exports = RxUse;
