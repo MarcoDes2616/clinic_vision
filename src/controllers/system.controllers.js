@@ -22,7 +22,6 @@ const login = catchError(async (req, res) => {
 const resetPaswwordMail = catchError(async (req, res) => {
   const { email } = req.body;
   const user = await Users.findOne({ where: { email } });
-  console.log(user);
   if (!user || !user?.status) return res.status(404).json({ message: "User no found" })
   const tokenToVerify = jwt.sign({ user }, process.env.TOKEN_SECRET, {
     expiresIn: "1h"});
