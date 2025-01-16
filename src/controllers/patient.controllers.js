@@ -4,34 +4,49 @@ const Sponsorship = require('../models/Sponsorship');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
 
-const getAllPatient = catchError(async(req, res) => {
-    let { search } = req.query;
+const getAllPatient = catchError(async (req, res) => {
+    let { search, page = 1, limit = 10 } = req.query;
 
-    let condition = search 
-      ? {
-          [Op.or]: [
-            { '$documentNumber$': { [Op.iLike]: `%${search}%` } },
-            { '$firstname$': { [Op.iLike]: `%${search}%` } },
-            { '$lastname$': { [Op.iLike]: `%${search}%` } },
-          ]
-        }
-      : { status: true };
-    const results = await Patient.findAll({
+    page = parseInt(page, 10) || 1;
+    limit = parseInt(limit, 10) || 15;
+    const offset = (page - 1) * limit;
+
+    let condition = search
+        ? {
+              [Op.or]: [
+                  { '$documentNumber$': { [Op.iLike]: `%${search}%` } },
+                  { '$firstname$': { [Op.iLike]: `%${search}%` } },
+                  { '$lastname$': { [Op.iLike]: `%${search}%` } },
+              ],
+          }
+        : { status: true };
+
+    const { count, rows } = await Patient.findAndCountAll({
         where: condition,
-        attributes: { exclude: ['sponsorshipId', "createdAt", "updatedAt"] },
+        attributes: { exclude: ['sponsorshipId', 'createdAt', 'updatedAt'] },
         include: [
             {
                 model: Sponsorship,
             },
             {
                 model: ClinicHistory,
-                attributes: ["id", "previousMedical"]
-            }
+                attributes: ['id', 'previousMedical'],
+            },
         ],
-        order: [['id', 'DESC']]
+        order: [['id', 'DESC']],
+        limit,
+        offset,
     });
-    return res.json(results);
+
+    const totalPages = Math.ceil(count / limit);
+    return res.json({
+        results: rows,
+        currentPage: page,
+        totalPages,
+        totalItems: count,
+    });
 });
+
 
 const createPatient = catchError(async(req, res) => {
     const {previousMedical, ...restOfData} = req.body
@@ -80,10 +95,15 @@ const removePatient = catchError(async(req, res) => {
 
 const updatePatient = catchError(async(req, res) => {
     const { id } = req.params;
+    const {previousMedical, ...restOfData} = req.body
     const result = await Patient.update(
-        req.body,
+        restOfData,
         { where: {id}, returning: true }
     );
+    await ClinicHistory.update(
+        {previousMedical},
+        { where: {patientId: id}}
+    )
     if(result[0] === 0) return res.sendStatus(404);
     return res.json(result[1][0]);
 });
