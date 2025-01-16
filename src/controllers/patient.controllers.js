@@ -3,13 +3,10 @@ const Patient = require('../models/Patient');
 const Sponsorship = require('../models/Sponsorship');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
+const paginate = require('../utils/pagination');
 
 const getAllPatient = catchError(async (req, res) => {
     let { search, page = 1, limit = 10 } = req.query;
-
-    page = parseInt(page, 10) || 1;
-    limit = parseInt(limit, 10) || 15;
-    const offset = (page - 1) * limit;
 
     let condition = search
         ? {
@@ -21,31 +18,30 @@ const getAllPatient = catchError(async (req, res) => {
           }
         : { status: true };
 
-    const { count, rows } = await Patient.findAndCountAll({
+    const attributes = { exclude: ['sponsorshipId', 'createdAt', 'updatedAt'] };
+    const include = [
+        {
+            model: Sponsorship,
+        },
+        {
+            model: ClinicHistory,
+            attributes: ['id', 'previousMedical'],
+        },
+    ];
+
+    const response = await paginate({
+        model: Patient,
         where: condition,
-        attributes: { exclude: ['sponsorshipId', 'createdAt', 'updatedAt'] },
-        include: [
-            {
-                model: Sponsorship,
-            },
-            {
-                model: ClinicHistory,
-                attributes: ['id', 'previousMedical'],
-            },
-        ],
-        order: [['id', 'DESC']],
+        attributes,
+        include,
+        page,
         limit,
-        offset,
     });
 
-    const totalPages = Math.ceil(count / limit);
-    return res.json({
-        results: rows,
-        currentPage: page,
-        totalPages,
-        totalItems: count,
-    });
+    // Retornar la respuesta
+    return res.json(response);
 });
+
 
 
 const createPatient = catchError(async(req, res) => {
