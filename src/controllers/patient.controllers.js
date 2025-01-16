@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const paginate = require('../utils/pagination');
 
 const getAllPatient = catchError(async (req, res) => {
-    let { search, page = 1, limit = 10 } = req.query;
+    let { search, page = 1 } = req.query;
 
     let condition = search
         ? {
@@ -35,7 +35,6 @@ const getAllPatient = catchError(async (req, res) => {
         attributes,
         include,
         page,
-        limit,
     });
 
     // Retornar la respuesta

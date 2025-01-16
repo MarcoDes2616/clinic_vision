@@ -5,11 +5,10 @@ const paginate = async ({
     include = [],
     order = [['id', 'DESC']],
     page = 1,
-    limit = 10,
 }) => {
-
+    
     page = parseInt(page, 10) || 1;
-    limit = parseInt(limit, 10) || 10;
+    limit = 10;
 
     const offset = (page - 1) * limit;
 
