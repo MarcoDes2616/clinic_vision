@@ -3,35 +3,45 @@ const Patient = require('../models/Patient');
 const Sponsorship = require('../models/Sponsorship');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
+const paginate = require('../utils/pagination');
 
-const getAllPatient = catchError(async(req, res) => {
-    let { search } = req.query;
+const getAllPatient = catchError(async (req, res) => {
+    let { search, page = 1 } = req.query;
 
-    let condition = search 
-      ? {
-          [Op.or]: [
-            { '$documentNumber$': { [Op.iLike]: `%${search}%` } },
-            { '$firstname$': { [Op.iLike]: `%${search}%` } },
-            { '$lastname$': { [Op.iLike]: `%${search}%` } },
-          ]
-        }
-      : { status: true };
-    const results = await Patient.findAll({
+    let condition = search
+        ? {
+              [Op.or]: [
+                  { '$documentNumber$': { [Op.iLike]: `%${search}%` } },
+                  { '$firstname$': { [Op.iLike]: `%${search}%` } },
+                  { '$lastname$': { [Op.iLike]: `%${search}%` } },
+              ],
+          }
+        : { status: true };
+
+    const attributes = { exclude: ['sponsorshipId', 'createdAt', 'updatedAt'] };
+    const include = [
+        {
+            model: Sponsorship,
+        },
+        {
+            model: ClinicHistory,
+            attributes: ['id', 'previousMedical'],
+        },
+    ];
+
+    const response = await paginate({
+        model: Patient,
         where: condition,
-        attributes: { exclude: ['sponsorshipId', "createdAt", "updatedAt"] },
-        include: [
-            {
-                model: Sponsorship,
-            },
-            {
-                model: ClinicHistory,
-                attributes: ["id", "previousMedical"]
-            }
-        ],
-        order: [['id', 'DESC']]
+        attributes,
+        include,
+        page,
     });
-    return res.json(results);
+
+    // Retornar la respuesta
+    return res.json(response);
 });
+
+
 
 const createPatient = catchError(async(req, res) => {
     const {previousMedical, ...restOfData} = req.body
@@ -80,10 +90,15 @@ const removePatient = catchError(async(req, res) => {
 
 const updatePatient = catchError(async(req, res) => {
     const { id } = req.params;
+    const {previousMedical, ...restOfData} = req.body
     const result = await Patient.update(
-        req.body,
+        restOfData,
         { where: {id}, returning: true }
     );
+    await ClinicHistory.update(
+        {previousMedical},
+        { where: {patientId: id}}
+    )
     if(result[0] === 0) return res.sendStatus(404);
     return res.json(result[1][0]);
 });

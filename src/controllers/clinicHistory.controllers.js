@@ -5,19 +5,39 @@ const Attention = require('../models/Attention');
 const Location = require('../models/Location');
 const Users = require('../models/Users');
 const Sponsorship = require('../models/Sponsorship');
+const paginate = require('../utils/pagination');
+const { Op } = require('sequelize');
 
-const getAllClinicHistory = catchError(async(req, res) => {
-    const results = await ClinicHistory.findAll({
-        where: {status: true},
-        attributes: {exclude: ["patientId"]},
-        include: {
-            model: Patient,
-            attributes: ["id", "documentNumber", "firstname", "lastname"]
-        },
-        order: [['id', 'DESC']]
+const getAllClinicHistory = catchError(async (req, res) => {
+    let { search, page = 1 } = req.query;
+  
+    let condition = search
+      ? {
+          [Op.or]: [
+            { $documentNumber$: { [Op.iLike]: `%${search}%` } },
+            { $firstname$: { [Op.iLike]: `%${search}%` } },
+            { $lastname$: { [Op.iLike]: `%${search}%` } },
+          ],
+        }
+      : "";
+  
+    let attributes = { exclude: ["patientId"] };
+    let include = {
+      model: Patient,
+      attributes: ["id", "documentNumber", "firstname", "lastname"],
+    };
+    let order = [["id", "DESC"]];
+  
+    const results = await paginate({
+      model: ClinicHistory,
+      where: condition,
+      attributes,
+      include,
+      order,
+      page,
     });
     return res.json(results);
-});
+  });
 
 const getOneClinicHistory = catchError(async(req, res) => {
     const { id } = req.params;

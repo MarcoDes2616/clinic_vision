@@ -7,9 +7,9 @@ const initModels = require('../models');
 
 const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
 
-const location = [{name: "Batán"}, {name: "Sur"}, {name: "Colón"}]
-
 const sponsor = [{sponsor: "Med-Expert"}, {sponsor: "Visión CC"}]
+
+const location = [{name: "Batán", sponsorshipId: 1}, {name: "Sur", sponsorshipId: 1}, {name: "Colón", sponsorshipId: 2}]
 
 const users = [
   {
