@@ -5,9 +5,9 @@ const Location = require("../models/Location");
 const Sponsorship = require("../models/Sponsorship");
 const initModels = require('../models');
 
+const sponsor = [{sponsor: "Med-Expert"}, {sponsor: "Visión CC"}]
 const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
 
-const sponsor = [{sponsor: "Med-Expert"}, {sponsor: "Visión CC"}]
 
 const location = [{name: "Batán", sponsorshipId: 1}, {name: "Sur", sponsorshipId: 1}, {name: "Colón", sponsorshipId: 2}]
 
@@ -35,8 +35,8 @@ const users = [
 
 async function seedCreate() {
   await Role.bulkCreate(role);
-  await Location.bulkCreate(location)
   await Sponsorship.bulkCreate(sponsor)
+  await Location.bulkCreate(location)
   await Users.bulkCreate(users);
 }
 

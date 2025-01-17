@@ -1,7 +1,6 @@
 const catchError = require('../utils/catchError');
 const Location = require('../models/Location');
 const Sponsorship = require('../models/Sponsorship');
-const { where } = require('sequelize');
 
 const getAll = catchError(async(req, res) => {
     let {sponsorship: sponsorshipId} = req.query
@@ -21,6 +20,7 @@ const getAll = catchError(async(req, res) => {
         },
         order: [['id', 'DESC']]
     });
+
     return res.json(results);
 });
 
