@@ -3,7 +3,7 @@ const Location = require("../models/Location");
 const Enlistment = require("../models/Enlistment");
 
 const getAll = catchError(async (req, res) => {
-  let { enlisted: enlistmentId } = req.query;
+  let { enlistmentId } = req.query;
   let listed;
   const handleQueries = () => {
     if (enlistmentId) {
