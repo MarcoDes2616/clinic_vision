@@ -33,6 +33,14 @@ const Measurement = sequelize.define('measurement', {
     ccc_oi: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    od_axis: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    oi_axis: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 },
 {

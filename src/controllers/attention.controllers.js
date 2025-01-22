@@ -2,7 +2,8 @@ const catchError = require('../utils/catchError');
 const Attention = require('../models/Attention');
 const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
-const Prescription = require('../models/Prescription');
+const RxUse = require('../models/RxUse');
+
 
 const getAllAttention = catchError(async(req, res) => {
     const results = await Attention.findAll();
@@ -53,9 +54,6 @@ const getOneAttention = catchError(async(req, res) => {
             },
             {
                 model: RxUse,
-            },
-            {
-                model: Prescription,
                 attributes: {exclude: ["attentionId"]}
             },
             {

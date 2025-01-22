@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Sponsorship = sequelize.define('sponsorships', {
-    sponsor: {
+const DiagnosisList = sequelize.define('diagnosis_list', {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -10,4 +10,4 @@ const Sponsorship = sequelize.define('sponsorships', {
     timestamps: false
 });
 
-module.exports = Sponsorship;
+module.exports = DiagnosisList;

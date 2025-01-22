@@ -6,10 +6,6 @@ const Attention = sequelize.define('attentions', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    diagnosis: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     observations: {
         type: DataTypes.STRING,
         allowNull: true
@@ -21,7 +17,11 @@ const Attention = sequelize.define('attentions', {
     lensesType: {
         type: DataTypes.STRING,
         allowNull: true
-    }
+    },
+    use_recomendation: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 },{
     timestamps: false
 });

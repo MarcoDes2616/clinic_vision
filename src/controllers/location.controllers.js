@@ -1,39 +1,38 @@
 const catchError = require("../utils/catchError");
 const Location = require("../models/Location");
-const Sponsorship = require("../models/Sponsorship");
+const Enlistment = require("../models/Enlistment");
 
 const getAll = catchError(async (req, res) => {
-  let { sponsorship: sponsorshipId } = req.query;
-  let sponsor;
+  let { enlisted: enlistmentId } = req.query;
+  let listed;
   const handleQueries = () => {
-    if (sponsorshipId) {
+    if (enlistmentId) {
       return {
-        where: { sponsorshipId: sponsorshipId },
+        where: { enlistmentId },
         order: [["id", "DESC"]],
       };
     } else {
       return {
         include: {
-          model: Sponsorship,
-          attributes: ["sponsor"],
+          model: Enlistment,
+          attributes: ["name"],
         },
         order: [["id", "DESC"]],
       };
     }
   };
 
-  if (sponsorshipId) {
-    sponsor = await Sponsorship.findOne({
-      where: { id: sponsorshipId },
+  if (enlistmentId) {
+    listed = await Enlistment.findOne({
+      where: { id: enlistmentId },
     });
   }
-  console.log(sponsor);
-  
+
   const results = await Location.findAll({
     ...handleQueries()
   });
   
-  return res.json(sponsorshipId ? {results, sponsor: sponsor.sponsor} : {results});
+  return res.json(enlistmentId ? {results, listed: listed.name} : {results});
 });
 
 const create = catchError(async (req, res) => {

@@ -2,14 +2,14 @@ const sequelize = require("../utils/connection");
 const Users = require("../models/Users");
 const Role = require("../models/Roles");
 const Location = require("../models/Location");
-const Sponsorship = require("../models/Sponsorship");
 const initModels = require('../models');
+const Enlistment = require("../models/Enlistment");
 
-const sponsor = [{sponsor: "Med-Expert"}, {sponsor: "Visión CC"}]
+const listed = [{name: "Med-Expert"}, {name: "Visión CC"}]
 const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
 
 
-const location = [{name: "Batán", sponsorshipId: 1}, {name: "Sur", sponsorshipId: 1}, {name: "Colón", sponsorshipId: 2}]
+const location = [{name: "Batán", enlistmentId: 1}, {name: "Sur", enlistmentId: 1}, {name: "Colón", enlistmentId: 2}]
 
 const users = [
   {
@@ -35,7 +35,7 @@ const users = [
 
 async function seedCreate() {
   await Role.bulkCreate(role);
-  await Sponsorship.bulkCreate(sponsor)
+  await Enlistment.bulkCreate(listed)
   await Location.bulkCreate(location)
   await Users.bulkCreate(users);
 }
@@ -45,7 +45,6 @@ initModels()
 sequelize
   .sync({ force: true })
   .then(async () => {
-    // console.log('Seeding database...');
     await seedCreate();
     console.log("Seeding completed successfully.");
   })

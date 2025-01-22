@@ -1,6 +1,6 @@
 const catchError = require('../utils/catchError');
 const Patient = require('../models/Patient');
-const Sponsorship = require('../models/Sponsorship');
+const Enlistment = require('../models/Enlistment');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
 const paginate = require('../utils/pagination');
@@ -18,10 +18,10 @@ const getAllPatient = catchError(async (req, res) => {
           }
         : { status: true };
 
-    const attributes = { exclude: ['sponsorshipId', 'createdAt', 'updatedAt'] };
+    const attributes = { exclude: ['enlistmentId', 'createdAt', 'updatedAt'] };
     const include = [
         {
-            model: Sponsorship,
+            model: Enlistment,
         },
         {
             model: ClinicHistory,
@@ -63,11 +63,11 @@ const createPatient = catchError(async(req, res) => {
 const getOnePatient = catchError(async(req, res) => {
     const { id } = req.params;
     const result = await Patient.findByPk(id, {
-        attributes: { exclude: ['sponsorshipId'] },
+        attributes: { exclude: ['enlistmentId'] },
         include: [
             {
-                model: Sponsorship,
-                attributes: ['sponsor'],
+                model: Enlistment,
+                attributes: ['name'],
             },
             {
                 model: ClinicHistory,
