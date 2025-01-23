@@ -36,7 +36,6 @@ const getAllPatient = catchError(async (req, res) => {
         include,
         page,
     });
-
     // Retornar la respuesta
     return res.json(response);
 });
