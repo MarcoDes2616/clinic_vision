@@ -3,7 +3,7 @@ const sequelize = require('../utils/connection');
 
 const Role = sequelize.define('role', {
     name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
 },{

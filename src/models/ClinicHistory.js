@@ -10,12 +10,15 @@ const ClinicHistory = sequelize.define('clinicHistory', {
         type: DataTypes.DATEONLY,
         allowNull: true
     },
+    referred: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
-},
-{
+}, {
     timestamps: false
 });
 
