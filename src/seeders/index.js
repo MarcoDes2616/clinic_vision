@@ -4,13 +4,12 @@ const Role = require("../models/Roles");
 const Location = require("../models/Location");
 const initModels = require('../models');
 const Enlistment = require("../models/Enlistment");
+const DiagnosisList = require("../models/DiagnosisList");
 
 const listed = [{name: "Med-Expert"}, {name: "Visión CC"}]
 const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
-
-
+const diagnosis = [{name: "Miopía"}, {name: "Presbicia"}, {name: "Astigmatismo"}, ]
 const location = [{name: "Batán", enlistmentId: 1}, {name: "Sur", enlistmentId: 1}, {name: "Colón", enlistmentId: 2}]
-
 const users = [
   {
     firstname: "Marco",
@@ -38,6 +37,7 @@ async function seedCreate() {
   await Enlistment.bulkCreate(listed)
   await Location.bulkCreate(location)
   await Users.bulkCreate(users);
+  await DiagnosisList.bulkCreate(diagnosis)
 }
 
 // agregar force: true a la configuración de Sequelize
