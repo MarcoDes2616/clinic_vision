@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Role = sequelize.define('role', {
+const Enlistment = sequelize.define('enlistment', {
     name: {
         type: DataTypes.STRING(20),
         allowNull: false
@@ -10,4 +10,4 @@ const Role = sequelize.define('role', {
     timestamps: false
 });
 
-module.exports = Role;
+module.exports = Enlistment;

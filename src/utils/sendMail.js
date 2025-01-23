@@ -15,7 +15,6 @@ const sendEmail = (options) => new Promise((resolve, reject) => {
         ...options
     }
     transporter.sendMail(mailOptions, (error, info) => {
-        console.log(error, info)
         if (error) {
             console.log(error);
             return reject({ message: "An error has occured" })

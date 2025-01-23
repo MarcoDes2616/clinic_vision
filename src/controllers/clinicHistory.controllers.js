@@ -4,7 +4,7 @@ const Patient = require('../models/Patient');
 const Attention = require('../models/Attention');
 const Location = require('../models/Location');
 const Users = require('../models/Users');
-const Sponsorship = require('../models/Sponsorship');
+const Enlistment = require('../models/Enlistment');
 const paginate = require('../utils/pagination');
 const { Op } = require('sequelize');
 
@@ -46,9 +46,9 @@ const getOneClinicHistory = catchError(async(req, res) => {
         include: [
             {
                 model: Patient,
-                attributes: {exclude: ["sponsorshipId", "createdAt", "updatedAt", "status"]},
+                attributes: {exclude: ["enlistmentId", "createdAt", "updatedAt", "status"]},
                 include: {
-                    model: Sponsorship,
+                    model: Enlistment,
                 }
             },
             {

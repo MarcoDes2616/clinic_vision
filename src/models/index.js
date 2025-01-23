@@ -1,55 +1,55 @@
 const Users = require("./Users");
 const Role = require("./Roles");
 const Patient = require("./Patient");
-const Sponsorship = require("./Sponsorship");
+const Enlistment = require("./Enlistment");
 const ClinicHistory = require("./ClinicHistory");
 const Attention = require("./Attention");
 const Location = require("./Location");
-const Prescription = require("./Prescription");
 const Measurement = require("./Measurement");
 const RxUse = require("./RxUse");
+const DiagnosisList = require("./DiagnosisList");
 
 const initModels = () => {
 
   // roles 1 ----- * users
-  Role.hasMany(Users, { foreignKey: "roleId" });
-  Users.belongsTo(Role, { foreignKey: "roleId" });
+  Role.hasMany(Users);
+  Users.belongsTo(Role);
 
-  // sponsorship 1 ----- * patients
-  Sponsorship.hasMany(Patient, { foreignKey: "sponsorshipId" });
-  Patient.belongsTo(Sponsorship, { foreignKey: "sponsorshipId" });
+  // enlistment 1 ----- * patients
+  Enlistment.hasMany(Patient);
+  Patient.belongsTo(Enlistment)
   
   // patients 1 ----- 1 clinicHistory
-  Patient.hasOne(ClinicHistory, { foreignKey: "patientId" });
-  ClinicHistory.belongsTo(Patient, { foreignKey: "patientId" });
+  Patient.hasOne(ClinicHistory);
+  ClinicHistory.belongsTo(Patient)
   
   // measurements 1 ----- 1 attention
-  Attention.hasOne(Measurement, { foreignKey: "attentionId" });
-  Measurement.belongsTo(Attention, { foreignKey: "attentionId" });
+  Attention.hasOne(Measurement);
+  Measurement.belongsTo(Attention)
   
   // prescription 1 ----- 1 attention
-  Attention.hasOne(Prescription, { foreignKey: "attentionId" });
-  Prescription.belongsTo(Attention, { foreignKey: "attentionId" });
-
-   // prescription 1 ----- 1 attention
-   Attention.hasOne(RxUse, { foreignKey: "attentionId" });
-   RxUse.belongsTo(Attention, { foreignKey: "attentionId" });
+  Attention.hasOne(RxUse);
+  RxUse.belongsTo(Attention)
   
   // locations 1 ----- * attention
-  Location.hasMany(Attention, { foreignKey: "locationId" });
-  Attention.belongsTo(Location, { foreignKey: "locationId" });
+  Location.hasMany(Attention);
+  Attention.belongsTo(Location)
 
-  // sponsorship 1 ----- * locations
-  Sponsorship.hasMany(Location, { foreignKey: "sponsorshipId" });
-  Location.belongsTo(Sponsorship, { foreignKey: "sponsorshipId" });
+  // enlistment 1 ----- * locations
+  Enlistment.hasMany(Location);
+  Location.belongsTo(Enlistment)
   
   // clinicHistory 1 ----- * attention
-  ClinicHistory.hasMany(Attention, { foreignKey: "clinicHistoryId" });
-  Attention.belongsTo(ClinicHistory, { foreignKey: "clinicHistoryId" });
+  ClinicHistory.hasMany(Attention);
+  Attention.belongsTo(ClinicHistory)
   
   // users 1 ----- * attention
-  Users.hasMany(Attention, { foreignKey: "userId" });
-  Attention.belongsTo(Users, { foreignKey: "userId" });
+  Users.hasMany(Attention);
+  Attention.belongsTo(Users)
+
+  // attention * ----- * diagnosisList
+  Attention.belongsToMany(DiagnosisList, { through: 'diagnosis_attention' })
+  DiagnosisList.belongsToMany(Attention, { through: 'diagnosis_attention' })
 };
 
 module.exports = initModels;

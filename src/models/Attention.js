@@ -6,23 +6,27 @@ const Attention = sequelize.define('attentions', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    diagnosis: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     observations: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING(255),
+        allowNull: false
     },
     requireLenses: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: false
+    },
+    reasonConsultation: {
+        type: DataTypes.STRING(100),
+        allowNull: false
     },
     lensesType: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
+        defaultValue: false
+    },
+    useRecomendation: {
+        type: DataTypes.STRING(50),
         allowNull: true
-    }
-},{
+    },
+}, {
     timestamps: false
 });
 

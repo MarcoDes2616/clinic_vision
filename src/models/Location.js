@@ -3,7 +3,7 @@ const sequelize = require('../utils/connection');
 
 const Location = sequelize.define('locations', {
     name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
 },{
