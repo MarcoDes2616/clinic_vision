@@ -8,6 +8,7 @@ const Enlistment = require("../models/Enlistment");
 const paginate = require("../utils/pagination");
 const { Op } = require("sequelize");
 const NextAttention = require("../models/NextAttention");
+const DiagnosisList = require("../models/DiagnosisList");
 
 const getAllClinicHistory = catchError(async (req, res) => {
   let { search, page = 1 } = req.query;
@@ -57,7 +58,7 @@ const getOneClinicHistory = catchError(async (req, res) => {
           {
             model: NextAttention,
             attributes: { exclude: ["patientId"]}
-          }
+          },
         ],
       },
       {
@@ -71,6 +72,9 @@ const getOneClinicHistory = catchError(async (req, res) => {
           {
             model: Location,
           },
+          {
+            model: DiagnosisList
+          }
         ],
         order: [["id", "DESC"]],
       },

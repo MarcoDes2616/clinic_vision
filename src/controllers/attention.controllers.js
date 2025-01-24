@@ -3,6 +3,8 @@ const Attention = require('../models/Attention');
 const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
 const RxUse = require('../models/RxUse');
+const Measurement = require('../models/Measurement');
+const DiagnosisList = require('../models/DiagnosisList');
 
 
 const getAllAttention = catchError(async(req, res) => {
@@ -11,21 +13,21 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {clinicHistoryId, locationId, ...restOfData} = req.body
+    const {measurements, details, rxUsed} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
         userId: req.user.id,
-        clinicHistoryId,
-        locationId
+        ...details
     }
     const result = await Attention.create(data);
     try {
-        await RxUse.create({...restOfData, attentionId: result.id})
+        await RxUse.create({...rxUsed, attentionId: result.id})
+        await Measurement.create({...measurements, attentionId: result.id})
         await ClinicHistory.update({lastAttention: date}, {
-            where: {id: clinicHistoryId}
+            where: {id: details.clinicHistoryId}
         })
-        
+        await result.setDiagnosisLists(details.diagnosis)
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
         return res.status(409).json({result: "conflict", error})
