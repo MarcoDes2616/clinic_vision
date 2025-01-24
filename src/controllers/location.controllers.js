@@ -3,36 +3,15 @@ const Location = require("../models/Location");
 const Enlistment = require("../models/Enlistment");
 
 const getAll = catchError(async (req, res) => {
-  let { enlistmentId } = req.query;
-  let listed;
-  const handleQueries = () => {
-    if (enlistmentId) {
-      return {
-        where: { enlistmentId },
-        order: [["id", "DESC"]],
-      };
-    } else {
-      return {
-        include: {
-          model: Enlistment,
-          attributes: ["name"],
-        },
-        order: [["id", "DESC"]],
-      };
-    }
-  };
-
-  if (enlistmentId) {
-    listed = await Enlistment.findOne({
-      where: { id: enlistmentId },
-    });
-  }
-
   const results = await Location.findAll({
-    ...handleQueries()
+    include: {
+      model: Enlistment,
+      attributes: ["name"],
+    },
+    order: [["id", "DESC"]],
   });
-  
-  return res.json(enlistmentId ? {results, listed: listed.name} : {results});
+
+  return res.json(results);
 });
 
 const create = catchError(async (req, res) => {
