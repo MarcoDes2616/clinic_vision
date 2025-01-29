@@ -26,7 +26,7 @@ const getAllPatient = catchError(async (req, res) => {
         },
         {
             model: ClinicHistory,
-            attributes: ['id', 'previousMedical', "referred"],
+            attributes: ['id', 'previousMedical', "referred", "lastAttention"],
         },
         {
             model: NextAttention,
