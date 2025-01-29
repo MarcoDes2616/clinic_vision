@@ -9,6 +9,8 @@ const paginate = require("../utils/pagination");
 const { Op } = require("sequelize");
 const NextAttention = require("../models/NextAttention");
 const DiagnosisList = require("../models/DiagnosisList");
+const RxUse = require("../models/RxUse");
+const Measurement = require("../models/Measurement");
 
 const getAllClinicHistory = catchError(async (req, res) => {
   let { search, page = 1 } = req.query;
@@ -74,6 +76,12 @@ const getOneClinicHistory = catchError(async (req, res) => {
           },
           {
             model: DiagnosisList
+          },
+          {
+            model: RxUse,
+          },
+          {
+            model: Measurement,
           }
         ],
         order: [["id", "DESC"]],
