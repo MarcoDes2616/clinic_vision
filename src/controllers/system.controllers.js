@@ -20,7 +20,7 @@ const login = catchError(async (req, res) => {
 
 //ENDPOINT SYSTEM 2 --- RESET PASSWORD
 const resetPaswwordMail = catchError(async (req, res) => {
-  const { email } = req.body;
+  const { email, frontBaseUrl } = req.body;
   const user = await Users.findOne({ where: { email } });
   if (!user || !user?.status) return res.status(404).json({ message: "User no found" })
   const tokenToVerify = jwt.sign({ user }, process.env.TOKEN_SECRET, {
@@ -28,9 +28,9 @@ const resetPaswwordMail = catchError(async (req, res) => {
   await Users.update({ resetCode: tokenToVerify }, { where: { id: user.id } });
   await sendEmail({
     to: user.email,
-    subject: "Reset password",
+    subject: "Recibimos una solicitud de reseteo de su contraseña",
     html: ` <h3>Estas intentanto recuperar tu contraseña</h3>
-            <a href="${req.body.frontBaseUrl}/${tokenToVerify}">Click en el enlace para resetear tu contraseña</a>`
+            <a href="${frontBaseUrl}/${tokenToVerify}">Click en el enlace para resetear tu contraseña</a>`
   });
   res.json({success: true});
 });

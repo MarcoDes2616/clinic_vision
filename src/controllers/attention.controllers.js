@@ -4,7 +4,7 @@ const ClinicHistory = require('../models/ClinicHistory');
 const moment = require('moment-timezone');
 const RxUse = require('../models/RxUse');
 const Measurement = require('../models/Measurement');
-const DiagnosisList = require('../models/DiagnosisList');
+const NextAttention = require('../models/NextAttention');
 
 
 const getAllAttention = catchError(async(req, res) => {
@@ -13,7 +13,7 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {measurements, details, rxUsed} = req.body
+    const {measurements, details, rxUsed, nextAttention} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
@@ -24,15 +24,19 @@ const createAttention = catchError(async(req, res) => {
     try {
         await RxUse.create({...rxUsed, attentionId: result.id})
         await Measurement.create({...measurements, attentionId: result.id})
+        await result.setDiagnosisLists(details.diagnosis)
+        await NextAttention.create({...nextAttention})
         await ClinicHistory.update({lastAttention: date}, {
             where: {id: details.clinicHistoryId}
         })
-        await result.setDiagnosisLists(details.diagnosis)
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
+        await RxUse.destroy({where: {attentionId: result.id}})
+        await Measurement.destroy({where: {attentionId: result.id}})
+        await NextAttention.destroy({where: {attentionId: result.id}})
         return res.status(409).json({result: "conflict", error})
     }
-    return res.status(201).json({success: true, attentionId: result.id});
+    return res.status(201).json({success: true, clinicHistoryId: details.clinicHistoryId});
 });
 
 const getOneAttention = catchError(async(req, res) => {
