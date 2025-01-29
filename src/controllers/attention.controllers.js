@@ -33,7 +33,7 @@ const createAttention = catchError(async(req, res) => {
         await Attention.destroy({where: {id: result.id}})
         await RxUse.destroy({where: {attentionId: result.id}})
         await Measurement.destroy({where: {attentionId: result.id}})
-        await NextAttention.destroy({where: {attentionId: result.id}})
+        await NextAttention.destroy({where: {patientId: nextAttention.patientId}})
         return res.status(409).json({result: "conflict", error})
     }
     return res.status(201).json({success: true, clinicHistoryId: details.clinicHistoryId});
