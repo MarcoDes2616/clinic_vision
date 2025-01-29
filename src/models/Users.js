@@ -62,19 +62,19 @@ Users.beforeCreate(async (user) => {
 });
 
 Users.afterFind(async(user) => {
-  if (post.dataValues) {
+  if (user.dataValues) {
       const url = await getFirebaseUrl(user.signatureImg)
       user.signatureImg = url
       return
   }
-  const urls = post.map(async(item) => {
+  const urls = user.map(async(item) => {
       if(item.signatureImg){
           const url = await getFirebaseUrl(item.signatureImg)
           item.signatureImg = url
       }
   })
   await Promise.all(urls) // map async
-  return post
+  return user
 })
 
 module.exports = Users;
