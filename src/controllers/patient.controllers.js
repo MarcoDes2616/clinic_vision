@@ -4,6 +4,7 @@ const Enlistment = require('../models/Enlistment');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
 const paginate = require('../utils/pagination');
+const NextAttention = require('../models/NextAttention');
 
 const getAllPatient = catchError(async (req, res) => {
     let { search, page = 1 } = req.query;
@@ -26,6 +27,10 @@ const getAllPatient = catchError(async (req, res) => {
         {
             model: ClinicHistory,
             attributes: ['id', 'previousMedical', "referred"],
+        },
+        {
+            model: NextAttention,
+            attributes: { exclude: ["patientId"]}
         },
     ];
 
