@@ -9,7 +9,7 @@ const firebaseFile = async(req, res, next) => {
     try {
         const imgRef = ref(storage, `post/${Date.now()}-${req.file.originalname}`);
         const imgUploaded = await uploadBytes(imgRef, req.file.buffer);
-        req.body.imageUrl =  imgUploaded.metadata.fullPath
+        req.body.signatureImg =  imgUploaded.metadata.fullPath
         next()
     } catch (error) {
         next(error)

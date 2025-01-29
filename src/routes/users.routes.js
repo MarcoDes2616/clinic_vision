@@ -13,6 +13,6 @@ userRouter.route('/')
 userRouter.route('/:id')
     .get(isAdmin, getOne)
     .delete(isAdmin, enableOrDisableUser)
-    .put(isAdmin, update);
+    .put(isAdmin, upload.single("file"), firebaseFile, update);
 
 module.exports = userRouter;
