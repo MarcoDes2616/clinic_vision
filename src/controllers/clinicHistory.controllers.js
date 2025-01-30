@@ -89,20 +89,6 @@ const getOneClinicHistory = catchError(async (req, res) => {
       },
     ],
   });
-  console.log(result.attentions);
-  
-  let users = result.attentions.map(async (item) => {
-    if (item.dataValues) {
-      const url = await getFirebaseUrl(item.user.signatureImg)
-      item.user.signatureImg = url
-      return item;
-  }
-    if (item.user.signatureImg) {
-      const url = await getFirebaseUrl(item.user.signatureImg);
-      item.user.signatureImg = url;
-    }
-  });
-  Promise.all(users);
 
   if (!result) return res.sendStatus(404);
   return res.json(result);
