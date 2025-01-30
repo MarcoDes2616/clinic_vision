@@ -4,6 +4,7 @@ const Enlistment = require('../models/Enlistment');
 const ClinicHistory = require('../models/ClinicHistory');
 const { Op } = require("sequelize");
 const paginate = require('../utils/pagination');
+const NextAttention = require('../models/NextAttention');
 
 const getAllPatient = catchError(async (req, res) => {
     let { search, page = 1 } = req.query;
@@ -25,7 +26,11 @@ const getAllPatient = catchError(async (req, res) => {
         },
         {
             model: ClinicHistory,
-            attributes: ['id', 'previousMedical'],
+            attributes: ['id', 'previousMedical', "referred", "lastAttention"],
+        },
+        {
+            model: NextAttention,
+            attributes: { exclude: ["patientId"]}
         },
     ];
 
@@ -43,12 +48,13 @@ const getAllPatient = catchError(async (req, res) => {
 
 
 const createPatient = catchError(async(req, res) => {
-    const {previousMedical, ...restOfData} = req.body
+    const {previousMedical, referred, ...restOfData} = req.body
     const {id} = await Patient.create(restOfData);
     try {
         const dataClinicHistory = {
             patientId: id,
-            previousMedical 
+            previousMedical,
+            referred
         }
         await ClinicHistory.create(dataClinicHistory)
     } catch (error) {
@@ -89,13 +95,13 @@ const removePatient = catchError(async(req, res) => {
 
 const updatePatient = catchError(async(req, res) => {
     const { id } = req.params;
-    const {previousMedical, ...restOfData} = req.body
+    const {previousMedical, referred, ...restOfData} = req.body
     const result = await Patient.update(
         restOfData,
         { where: {id}, returning: true }
     );
     await ClinicHistory.update(
-        {previousMedical},
+        {previousMedical, referred},
         { where: {patientId: id}}
     )
     if(result[0] === 0) return res.sendStatus(404);

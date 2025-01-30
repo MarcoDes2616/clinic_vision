@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/connection");
 const bcrypt = require("bcrypt");
+const { getFirebaseUrl } = require("../middlewares/firebase.middleware");
 
 const Users = sequelize.define(
   "users",
@@ -34,7 +35,11 @@ const Users = sequelize.define(
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
-    }
+    },
+    signatureImg: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     timestamps: true,
@@ -55,5 +60,21 @@ Users.beforeCreate(async (user) => {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   user.password = hashedPassword;
 });
+
+Users.afterFind(async(user) => {
+  if (user.dataValues) {
+      const url = await getFirebaseUrl(user.signatureImg)
+      user.signatureImg = url
+      return
+  }
+  const urls = user.map(async(item) => {
+      if(item.signatureImg){
+          const url = await getFirebaseUrl(item.signatureImg)
+          item.signatureImg = url
+      }
+  })
+  await Promise.all(urls) // map async
+  return user
+})
 
 module.exports = Users;

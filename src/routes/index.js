@@ -7,6 +7,7 @@ const clinicHistoryRouter = require('./clinicHistory.routes');
 const attentionRouter = require('./attention.routes');
 const measurementRouter = require('./measurement.routes');
 const prescriptionRouter = require('./prescription.routes');
+const controlListRouter = require('./diagnosisList.routes');
 const router = express.Router();
 
 // colocar las rutas aquí
@@ -25,5 +26,7 @@ router.use("/attention", attentionRouter)
 router.use("/measurement", measurementRouter)
 
 router.use("/prescription", prescriptionRouter)
+
+router.use("/control_list", controlListRouter)
 
 module.exports = router;

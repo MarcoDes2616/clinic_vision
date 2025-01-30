@@ -8,6 +8,7 @@ const Location = require("./Location");
 const Measurement = require("./Measurement");
 const RxUse = require("./RxUse");
 const DiagnosisList = require("./DiagnosisList");
+const NextAttention = require("./NextAttention");
 
 const initModels = () => {
 
@@ -48,8 +49,11 @@ const initModels = () => {
   Attention.belongsTo(Users)
 
   // attention * ----- * diagnosisList
-  Attention.belongsToMany(DiagnosisList, { through: 'diagnosis_attention' })
-  DiagnosisList.belongsToMany(Attention, { through: 'diagnosis_attention' })
+  Attention.belongsToMany(DiagnosisList, { through: 'diagnosisAttention' })
+  DiagnosisList.belongsToMany(Attention, { through: 'diagnosisAttention' })
+
+  Patient.hasMany(NextAttention)
+  NextAttention.belongsTo(Patient)
 };
 
 module.exports = initModels;
