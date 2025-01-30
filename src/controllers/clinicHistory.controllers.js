@@ -11,6 +11,7 @@ const NextAttention = require("../models/NextAttention");
 const DiagnosisList = require("../models/DiagnosisList");
 const RxUse = require("../models/RxUse");
 const Measurement = require("../models/Measurement");
+const { getFirebaseUrl } = require("../middlewares/firebase.middleware");
 
 const getAllClinicHistory = catchError(async (req, res) => {
   let { search, page = 1 } = req.query;
@@ -59,7 +60,7 @@ const getOneClinicHistory = catchError(async (req, res) => {
           },
           {
             model: NextAttention,
-            attributes: { exclude: ["patientId"]}
+            attributes: { exclude: ["patientId"] },
           },
         ],
       },
@@ -69,25 +70,40 @@ const getOneClinicHistory = catchError(async (req, res) => {
         include: [
           {
             model: Users,
-            attributes: ["id", "firstname", "lastname"],
+            attributes: ["id", "firstname", "lastname", "signatureImg"],
           },
           {
             model: Location,
           },
           {
-            model: DiagnosisList
+            model: DiagnosisList,
           },
           {
             model: RxUse,
           },
           {
             model: Measurement,
-          }
+          },
         ],
         order: [["id", "DESC"]],
       },
     ],
   });
+  console.log(result.attentions);
+  
+  let users = result.attentions.map(async (item) => {
+    if (item.dataValues) {
+      const url = await getFirebaseUrl(item.user.signatureImg)
+      item.user.signatureImg = url
+      return item;
+  }
+    if (item.user.signatureImg) {
+      const url = await getFirebaseUrl(item.user.signatureImg);
+      item.user.signatureImg = url;
+    }
+  });
+  Promise.all(users);
+
   if (!result) return res.sendStatus(404);
   return res.json(result);
 });
