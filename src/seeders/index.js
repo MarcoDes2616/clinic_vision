@@ -8,7 +8,12 @@ const DiagnosisList = require("../models/DiagnosisList");
 
 const listed = [{name: "Med-Expert"}, {name: "Visión CC"}]
 const role = [{ name: "S.Admin" }, { name: "Administrador" }, { name: "Profesional" }];
-const diagnosis = [{name: "Miopía"}, {name: "Presbicia"}, {name: "Astigmatismo"}, ]
+const diagnosis = [
+  {name: "Miopía-H52.1"}, 
+  {name: "Presbicia-H52"}, 
+  {name: "Astigmatismo-H52.2"}, 
+  {name: "Hipermetropía-H52.0"}
+]
 const location = [{name: "Batán", enlistmentId: 1}, {name: "Sur", enlistmentId: 1}, {name: "Colón", enlistmentId: 2}]
 const users = [
   {
@@ -29,6 +34,18 @@ const users = [
     email: "messiercarlos1@gmail.com",
     roleId: 1,
   },
+  {
+    firstname: "Alison",
+    lastname: "Singaucho ",
+    email: "alissonsingauchoguerra@gmail.com",
+    roleId: 3,
+  },
+  {
+    firstname: "Maria F",
+    lastname: "Calle ",
+    email: "mariafernandacallecondoy@gmail.com",
+    roleId: 3,
+  }
 ];
 
 
