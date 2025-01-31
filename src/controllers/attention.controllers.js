@@ -22,6 +22,7 @@ const createAttention = catchError(async(req, res) => {
         ...details
     }
     const result = await Attention.create(data);
+
     try {
         await RxUse.create({...rxUsed, attentionId: result.id})
         await RxFinal.create({...rxFinal, attentionId: result.id})
