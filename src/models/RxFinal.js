@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const RxUse = sequelize.define('rx_uses', {
+const RxFinal = sequelize.define('rx_finals', {
     od_used: {
         type: DataTypes.STRING(20),
         allowNull: true
@@ -30,4 +30,5 @@ const RxUse = sequelize.define('rx_uses', {
     timestamps: false
 });
 
-module.exports = RxUse;
+
+module.exports = RxFinal;

@@ -12,15 +12,15 @@ const Attention = sequelize.define('attentions', {
     },
     requireLenses: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        defaultValue: false
     },
     reasonConsultation: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: true
     },
     lensesType: {
         type: DataTypes.STRING(50),
-        defaultValue: false
+        defaultValue: true
     },
     useRecomendation: {
         type: DataTypes.STRING(50),

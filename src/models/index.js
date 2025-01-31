@@ -9,6 +9,7 @@ const Measurement = require("./Measurement");
 const RxUse = require("./RxUse");
 const DiagnosisList = require("./DiagnosisList");
 const NextAttention = require("./NextAttention");
+const RxFinal = require("./RxFinal");
 
 const initModels = () => {
 
@@ -28,9 +29,13 @@ const initModels = () => {
   Attention.hasOne(Measurement);
   Measurement.belongsTo(Attention)
   
-  // prescription 1 ----- 1 attention
+  // rxuse 1 ----- 1 attention
   Attention.hasOne(RxUse);
   RxUse.belongsTo(Attention)
+
+  // rxfinal 1 ----- 1 attention
+  Attention.hasOne(RxFinal);
+  RxFinal.belongsTo(Attention)
   
   // locations 1 ----- * attention
   Location.hasMany(Attention);

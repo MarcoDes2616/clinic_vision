@@ -22,7 +22,7 @@ const Patient = sequelize.define('patients', {
     },
     birthdate: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     company: {
         type: DataTypes.STRING(50),
@@ -30,7 +30,7 @@ const Patient = sequelize.define('patients', {
     },
     phone: {
         type: DataTypes.STRING(15),
-        allowNull: false
+        allowNull: true
     },
     address: {
         type: DataTypes.STRING(255),
