@@ -10,7 +10,7 @@ const isAdmin = (req, res, next) => {
         if (user.roleId !== 1 || !user.status) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        req.isAdmin = true;
+        req.isAdmin = user.roleId == 1;
         req.user = user
         next();
     } catch (err) {

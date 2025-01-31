@@ -6,6 +6,10 @@ const DiagnosisList = sequelize.define('diagnosisList', {
         type: DataTypes.STRING(20),
         allowNull: false
     },
+    code: {
+        type: DataTypes.STRING(20),
+        allowNull: false
+    }
 },{
     timestamps: false
 });

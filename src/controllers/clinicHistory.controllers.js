@@ -11,7 +11,7 @@ const NextAttention = require("../models/NextAttention");
 const DiagnosisList = require("../models/DiagnosisList");
 const RxUse = require("../models/RxUse");
 const Measurement = require("../models/Measurement");
-const { getFirebaseUrl } = require("../middlewares/firebase.middleware");
+const RxFinal = require("../models/RxFinal");
 
 const getAllClinicHistory = catchError(async (req, res) => {
   let { search, page = 1 } = req.query;
@@ -80,6 +80,9 @@ const getOneClinicHistory = catchError(async (req, res) => {
           },
           {
             model: RxUse,
+          },
+          {
+            model: RxFinal,
           },
           {
             model: Measurement,

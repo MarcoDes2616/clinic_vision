@@ -5,6 +5,7 @@ const moment = require('moment-timezone');
 const RxUse = require('../models/RxUse');
 const Measurement = require('../models/Measurement');
 const NextAttention = require('../models/NextAttention');
+const RxFinal = require('../models/RxFinal');
 
 
 const getAllAttention = catchError(async(req, res) => {
@@ -13,7 +14,7 @@ const getAllAttention = catchError(async(req, res) => {
 });
 
 const createAttention = catchError(async(req, res) => {
-    const {measurements, details, rxUsed, nextAttention} = req.body
+    const {measurements, details, rxUsed, nextAttention, rxFinal} = req.body
     const date = moment().tz('America/Guayaquil').format('YYYY-MM-DD')
     const data = {
         date,
@@ -21,8 +22,10 @@ const createAttention = catchError(async(req, res) => {
         ...details
     }
     const result = await Attention.create(data);
+
     try {
         await RxUse.create({...rxUsed, attentionId: result.id})
+        await RxFinal.create({...rxFinal, attentionId: result.id})
         await Measurement.create({...measurements, attentionId: result.id})
         await result.setDiagnosisLists(details.diagnosis)
         await NextAttention.create({...nextAttention})
@@ -32,6 +35,7 @@ const createAttention = catchError(async(req, res) => {
     } catch (error) {
         await Attention.destroy({where: {id: result.id}})
         await RxUse.destroy({where: {attentionId: result.id}})
+        await RxFinal.destroy({where: {attentionId: result.id}})
         await Measurement.destroy({where: {attentionId: result.id}})
         await NextAttention.destroy({where: {patientId: nextAttention.patientId}})
         return res.status(409).json({result: "conflict", error})
@@ -80,6 +84,8 @@ const removeAttention = catchError(async(req, res) => {
 
 const updateAttention = catchError(async(req, res) => {
     const { id } = req.params;
+    const isAdmin = req.isAdmin
+    if (!isAdmin) return res.sendStatus(401)
     const {userId, clinicHistoryId, locationId, date, ...restOfData} = req.body
     const result = await Attention.update(
         restOfData,

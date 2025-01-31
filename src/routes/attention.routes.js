@@ -17,7 +17,7 @@ attentionRouter.route("/")
 
 attentionRouter.route("/:id")
   .get(verifyJWT, getOneAttention)
-  .delete(isAdmin, removeAttention)
-  .put(verifyJWT, updateAttention);
+  .delete(verifyJWT, isAdmin, removeAttention)
+  .put(verifyJWT, verifyJWT, isAdmin, updateAttention);
 
 module.exports = attentionRouter;

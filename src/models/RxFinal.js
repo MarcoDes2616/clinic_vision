@@ -1,42 +1,34 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 
-const Measurement = sequelize.define('measurement', {
-    scl_od: {
+const RxFinal = sequelize.define('rx_finals', {
+    od_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    scl_oi: {
+    od_axis_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    scc_od: {
+    od_add_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    scc_oi: {
+    oi_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    ccl_od: {
+    oi_axis_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    ccl_oi: {
+    oi_add_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    ccc_od: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
-    ccc_oi: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
-},
-{
+},{
     timestamps: false
 });
 
-module.exports = Measurement;
+
+module.exports = RxFinal;
