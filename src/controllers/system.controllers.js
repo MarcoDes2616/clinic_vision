@@ -19,7 +19,7 @@ const login = catchError(async (req, res) => {
 });
 
 //ENDPOINT SYSTEM 2 --- RESET PASSWORD
-const resetPaswwordMail = catchError(async (req, res) => {
+const resetPasswordMail = catchError(async (req, res) => {
   const { email, frontBaseUrl } = req.body;
   const user = await Users.findOne({ where: { email } });
   if (!user || !user?.status) return res.status(404).json({ message: "User no found" })
@@ -88,7 +88,7 @@ const requestEmailVerification = catchError(async (req, res) => {
 
 module.exports = {
   login,
-  resetPaswwordMail,
+  resetPasswordMail,
   updatePassword,
   verifyEmail,
   getMe,
