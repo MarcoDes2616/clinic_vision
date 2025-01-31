@@ -1,4 +1,4 @@
-const { login, getMe, resetPaswwordMail, updatePassword, 
+const { login, getMe, resetPasswordMail, updatePassword, 
     requestEmailVerification, verifyEmail } = require('../controllers/system.controllers');
 const express = require('express');
 const verifyJWT = require('../middlewares/auth.middleware');
@@ -12,7 +12,7 @@ systemRouter.route("/me")
     .get(verifyJWT, getMe)
 
 systemRouter.route("/reset_password")
-    .post(resetPaswwordMail)
+    .post(resetPasswordMail)
 
 systemRouter.route("/update_password")
     .post(updatePassword)
