@@ -6,6 +6,10 @@ const RxUse = sequelize.define('rx_uses', {
         type: DataTypes.STRING(20),
         allowNull: true
     },
+    od_axis_used: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
     od_add_used: {
         type: DataTypes.STRING(20),
         allowNull: true
@@ -14,18 +18,14 @@ const RxUse = sequelize.define('rx_uses', {
         type: DataTypes.STRING(20),
         allowNull: true
     },
+    oi_axis_used: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
     oi_add_used: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    od_axis_used: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
-    oi_axis_used: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    }
 },{
     timestamps: false
 });

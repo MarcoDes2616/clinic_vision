@@ -6,6 +6,10 @@ const RxFinal = sequelize.define('rx_finals', {
         type: DataTypes.STRING(20),
         allowNull: true
     },
+    od_axis_final: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
     od_add_final: {
         type: DataTypes.STRING(20),
         allowNull: true
@@ -14,18 +18,14 @@ const RxFinal = sequelize.define('rx_finals', {
         type: DataTypes.STRING(20),
         allowNull: true
     },
+    oi_axis_final: {
+        type: DataTypes.STRING(20),
+        allowNull: true
+    },
     oi_add_final: {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    od_axis_final: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
-    oi_axis_final: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    }
 },{
     timestamps: false
 });
